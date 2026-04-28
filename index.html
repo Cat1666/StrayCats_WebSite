@@ -1,0 +1,1966 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cats Suno Song Writer 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            /* Smooth, Deep "Northern Lights" Gradient */
+            background: linear-gradient(300deg, #2e1065, #7e22ce, #2563eb, #0891b2, #be185d);
+            background-size: 400% 400%;
+            animation: smoothGradient 20s ease infinite;
+            position: relative;
+            min-height: 100vh;
+            overflow-x: hidden;
+            color: #e2e8f0;
+        }
+
+        @keyframes smoothGradient { 
+            0%{background-position:0% 50%}
+            50%{background-position:100% 50%}
+            100%{background-position:0% 50%}
+        }
+
+        /* Overlay to darken background for readability - Adjusted opacity for smoother look */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(15, 23, 42, 0.85); /* Slightly transparent to let gradient glow through */
+            z-index: -2;
+            pointer-events: none;
+        }
+
+        /* Scanline/Grid Effect */
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: 
+                linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
+                linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 2px, 3px 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .animate-spin {
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Glassmorphism Panel */
+        .glass-container {
+            background-color: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.6);
+            border-radius: 1rem;
+            padding: 2rem;
+        }
+
+        .form-input, .form-select, .form-textarea {
+            background-color: rgba(30, 41, 59, 0.7);
+            border-color: #475569;
+            color: white;
+            transition: all 0.2s;
+        }
+        
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            background-color: rgba(30, 41, 59, 0.95);
+            border-color: #38bdf8;
+            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+        }
+        
+        /* Lyric Studio Styles */
+        .lyric-editor-container {
+            position: relative;
+            border: 1px solid #475569;
+            border-radius: 0.5rem;
+            background-color: rgba(15, 23, 42, 0.95);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .lyric-toolbar {
+            background-color: rgba(30, 41, 59, 0.9);
+            border-bottom: 1px solid #475569;
+            padding: 0.5rem;
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .generated-lyrics {
+            background-color: transparent;
+            border: none;
+            color: #e2e8f0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            resize: vertical;
+            width: 100%;
+            padding: 1rem;
+            min-height: 400px;
+            line-height: 1.6;
+        }
+        
+        .generated-lyrics:focus {
+            outline: none;
+            background-color: rgba(30, 41, 59, 0.3);
+        }
+
+        .tag-btn {
+            background-color: #1e293b;
+            border: 1px solid #475569;
+            color: #38bdf8;
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            transition: all 0.2s;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+        }
+        .tag-btn:hover {
+            background-color: #0ea5e9;
+            color: white;
+            border-color: #0ea5e9;
+            transform: translateY(-1px);
+        }
+
+        .tag-btn-meta {
+            color: #c084fc;
+            border-color: #7e22ce;
+        }
+        .tag-btn-meta:hover {
+            background-color: #9333ea;
+            border-color: #9333ea;
+            color: white;
+        }
+
+        .tag-btn-perf {
+            color: #f472b6;
+            border-color: #db2777;
+        }
+        .tag-btn-perf:hover {
+            background-color: #be185d;
+            border-color: #be185d;
+            color: white;
+        }
+
+        .tool-btn {
+            background-color: #334155;
+            color: white;
+            font-size: 0.75rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+        }
+        .tool-btn:hover {
+            background-color: #475569;
+            border-color: #64748b;
+        }
+        .tool-btn i {
+            font-size: 0.8rem;
+        }
+
+        .syllable-counter {
+            position: absolute;
+            bottom: 0.5rem;
+            right: 1rem;
+            font-size: 0.7rem;
+            color: #94a3b8;
+            background: rgba(0,0,0,0.6);
+            padding: 2px 6px;
+            border-radius: 4px;
+            pointer-events: none;
+        }
+
+        .form-select {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%2394a3b8' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 0.5rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        .form-input:focus-visible, .form-select:focus-visible, #generate-btn:focus-visible, .btn-primary:focus-visible {
+            outline: 2px solid #38BDF8;
+            outline-offset: 2px;
+        }
+        .btn-primary {
+            background-color: #0EA5E9; /* Sky Blue 500 */
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(14, 165, 233, 0.3);
+        }
+        .btn-primary:hover {
+            background-color: #0284C7; /* Sky Blue 600 */
+            box-shadow: 0 0 25px rgba(14, 165, 233, 0.5);
+            transform: translateY(-1px);
+        }
+        .btn-secondary {
+            background-color: #334155;
+            transition: background-color 0.3s ease;
+        }
+        .btn-secondary:hover {
+            background-color: #475569;
+        }
+        
+        .search-results {
+            max-height: 240px;
+            overflow-y: auto;
+            border: 1px solid #475569;
+        }
+        /* Modern Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: #334155;
+            border-radius: 4px;
+            border: 2px solid #0f172a;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+
+        #toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background-color: #1e293b;
+            color: #f0f9ff;
+            padding: 12px 24px;
+            border-radius: 8px;
+            border: 1px solid #38bdf8;
+            z-index: 1050;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        #toast.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+        .tab-btn {
+            transition: all 0.2s ease;
+            border-bottom-width: 2px;
+            border-color: transparent;
+        }
+        .tab-btn.active {
+            border-color: #38BDF8;
+            color: #38BDF8;
+            background-color: rgba(56, 189, 248, 0.1);
+        }
+        .rgb-text {
+            background: linear-gradient(to right, #38bdf8, #818cf8, #c084fc, #38bdf8);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            background-size: 200% auto;
+            animation: rgbText 4s linear infinite;
+        }
+        @keyframes rgbText {
+            to { background-position: 200% center; }
+        }
+        .date-badge {
+            font-size: 0.7rem;
+            background: #1e293b;
+            padding: 2px 8px;
+            border-radius: 12px;
+            color: #94a3b8;
+            vertical-align: middle;
+            margin-left: 8px;
+            border: 1px solid #334155;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* History Item Styles */
+        .history-item {
+            background: rgba(30, 41, 59, 0.4);
+            border: 1px solid #334155;
+            transition: all 0.2s;
+        }
+        .history-item:hover {
+            background: rgba(30, 41, 59, 0.8);
+            border-color: #475569;
+        }
+    </style>
+</head>
+<body class="text-slate-200 flex items-center justify-center min-h-screen p-2 sm:p-6">
+
+    <div class="w-full max-w-4xl mx-auto glass-container my-4">
+        <header class="text-center mb-8">
+            <h1 class="text-4xl md:text-5xl font-bold text-white tracking-tight mb-2">
+                <span class="rgb-text">Cats Suno Song Writer</span>
+                <span class="text-2xl ml-2">5.5</span>
+            </h1>
+            <div class="mt-2 flex justify-center items-center gap-2 flex-wrap">
+                <p class="text-slate-400 text-sm">Ultimate AI Data Edition</p>
+                <span class="date-badge">Ver: 2026.03.26</span>
+            </div>
+        </header>
+
+        <!-- API Key Input Section -->
+        <div class="mb-6 bg-slate-900/60 p-4 rounded-xl border border-sky-500/20 shadow-inner">
+            <label for="api-key-input" class="block text-xs font-semibold text-slate-400 mb-2 uppercase tracking-wider">Gemini API Key</label>
+            <div class="flex flex-col sm:flex-row gap-3">
+                <div class="w-full relative flex-1">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i class="fas fa-key text-sky-400/70"></i>
+                    </div>
+                    <input type="password" id="api-key-input" placeholder="Paste your Gemini API Key here (starts with AIza...)" class="form-input w-full pl-10 p-2.5 rounded-lg border text-sm font-mono bg-slate-800/80">
+                </div>
+                <button type="button" id="save-key-btn" class="btn-secondary w-full sm:w-auto px-6 py-2.5 rounded-lg text-sm font-bold flex items-center justify-center gap-2 hover:bg-sky-600 hover:text-white transition-all">
+                    <i class="fas fa-save"></i> Save Locally
+                </button>
+            </div>
+            <p class="text-[10px] text-slate-500 mt-2"><i class="fas fa-lock mr-1"></i> Your key is stored securely in your browser's local storage and is never sent to our servers.</p>
+        </div>
+
+        <main>
+            <!-- Navigation Tabs -->
+            <div class="mb-6 border-b border-slate-700">
+                <nav class="flex space-x-2" aria-label="Tabs">
+                    <button id="create-tab-btn" type="button" class="tab-btn active w-1/2 font-medium text-center text-slate-400 px-4 py-3 text-sm hover:text-slate-200 focus:outline-none rounded-t-lg">
+                        <i class="fas fa-magic mr-2"></i>Create Song
+                    </button>
+                    <button id="history-tab-btn" type="button" class="tab-btn w-1/2 font-medium text-center text-slate-400 px-4 py-3 text-sm hover:text-slate-200 focus:outline-none rounded-t-lg">
+                        <i class="fas fa-history mr-2"></i>History
+                    </button>
+                </nav>
+            </div>
+
+            <!-- CREATE TAB CONTENT -->
+            <div id="create-tab-content">
+                <form id="song-form" class="space-y-4" aria-labelledby="form-heading">
+                    <h2 id="form-heading" class="sr-only">Song Creation Form</h2>
+                    
+                    <!-- Artist & Style Row -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Artist Searchable Dropdown -->
+                        <div>
+                            <label for="artist-search" class="block text-sm font-medium text-slate-300 mb-2">Select Artist (or Type Any)</label>
+                            <div class="flex items-center space-x-2">
+                                <div class="relative w-full">
+                                    <input type="text" id="artist-search" placeholder="Type ANY artist..." class="form-input w-full p-3 rounded-lg border focus:ring-2 focus:ring-sky-500 focus:border-sky-500" autocomplete="off">
+                                    <div id="artist-results" class="search-results absolute z-10 w-full bg-[#0f172a] rounded-md shadow-lg mt-1 hidden"></div>
+                                </div>
+                                <button type="button" id="random-artist-btn" class="btn-secondary h-full px-3 rounded-lg text-sm font-semibold" title="Random Artist"><i class="fas fa-dice"></i></button>
+                                <button type="button" id="blend-artist-btn" class="btn-secondary h-full px-3 rounded-lg text-sm font-semibold" title="Blend Artists"><i class="fas fa-blender"></i></button>
+                            </div>
+                            
+                            <!-- RESTORED: Full Artist List -->
+                            <select id="artist-select" class="hidden">
+                                <optgroup label="🚀 2026 Visionaries & Breakout Stars">
+                                    <option>XG (Galactic Era)</option><option>Tyla (Pop Queen)</option><option>Chappell Roan (Arena Rock)</option><option>Sabrina Carpenter (Director's Cut)</option><option>Fred again.. (Ambient Phase)</option><option>Tommy Richman</option><option>Ice Spice (Y2K Revival)</option><option>NewJeans (Global)</option><option>Peso Pluma</option><option>Tate McRae</option><option>Gracie Abrams</option><option>RIIZE</option><option>Kiss of Life</option><option>Benson Boone</option><option>Teddy Swims</option><option>BabyMonster</option><option>Renee Rapp</option><option>Hemlocke Springs</option><option>Ayra Starr</option><option>PinkPantheress</option><option>RAYE</option><option>Flo Milli</option><option>Doechii</option><option>Riovaz</option><option>Kanii</option><option>Nimstarr</option><option>Remi Wolf</option><option>Maude Latour</option><option>The Japanese House</option><option>MUNA</option><option>Faye Webster</option><option>Soccer Mommy</option><option>Snail Mail</option><option>The Kid LAROI</option><option>Dominic Fike</option><option>Omar Apollo</option><option>d4vd</option><option>JVKE</option><option>Stephen Sanchez</option><option>Laufey</option><option>Beabadoobee</option><option>Wallows</option><option>King Gizzard & The Lizard Wizard</option>
+                                </optgroup>
+                                <optgroup label="🤖 The AI & Virtual Wave">
+                                    <option>Hatsune Miku (Neural Tuning)</option><option>K/DA (Comeback)</option><option>CodeMiko</option><option>Mave:</option><option>PLAVE</option><option>ISEGYE IDOL</option><option>Gorillaz (Phase 10)</option><option>The Algorithm (Sentient)</option><option>Studio Killers</option><option>Polar</option><option>Apoki</option>
+                                </optgroup>
+                                <optgroup label="🌐 The Digital Network & Cyber">
+                                    <option>The Glitch Mob</option><option>Master Boot Record</option><option>Lorn</option><option>Magic Sword</option><option>Dan Terminus</option><option>Gost</option><option>Perturbator</option><option>Carpenter Brut</option><option>Health</option><option>Sewerslvt</option><option>Machine Girl</option><option>Nanoray</option><option>Access to Arasaka</option><option>Iglooghost</option><option>Flying Lotus</option>
+                                </optgroup>
+                                <optgroup label="🎤 Hip-Hop / Opium / Rage">
+                                    <option>Playboi Carti (Deep Voice)</option><option>Yeat (Experimental)</option><option>Ken Carson</option><option>Destroy Lonely</option><option>Sexyy Red</option><option>Central Cee</option><option>Metro Boomin</option><option>Travis Scott</option><option>Don Toliver</option><option>Kendrick Lamar</option><option>Drake</option><option>J. Cole</option><option>Nicki Minaj</option><option>Megan Thee Stallion</option><option>Doja Cat</option><option>Tyler, The Creator</option><option>A$AP Rocky</option><option>MF DOOM (Underground Legend)</option><option>Mos Def</option><option>Aesop Rock</option><option>Earl Sweatshirt</option><option>Danny Brown</option><option>JPEGMAFIA</option><option>Kid Cudi</option><option>Future</option><option>21 Savage</option><option>JID</option><option>Denzel Curry</option><option>Little Simz</option><option>Stormzy</option><option>Gunna</option><option>Lil Baby</option><option>A$AP Ferg</option><option>Vince Staples</option><option>Mac Miller</option><option>Juice WRLD</option><option>XXXTentacion</option><option>Lil Peep</option><option>Logic</option><option>Post Malone</option><option>Machine Gun Kelly (Rap)</option><option>Skepta</option><option>Dave</option><option>Westside Gunn</option><option>Conway the Machine</option><option>Benny the Butcher</option><option>Freddie Gibbs</option><option>Pusha T</option><option>Run The Jewels</option><option>Killer Mike</option>
+                                </optgroup>
+                                <optgroup label="👑 Classic Hip-Hop Legends">
+                                    <option>2Pac</option><option>The Notorious B.I.G.</option><option>Nas</option><option>Jay-Z</option><option>Snoop Dogg</option><option>Dr. Dre</option><option>Ice Cube</option><option>Wu-Tang Clan</option><option>N.W.A</option><option>Public Enemy</option><option>Run-D.M.C.</option><option>Beastie Boys</option><option>LL Cool J</option><option>Salt-N-Pepa</option><option>Queen Latifah</option><option>Missy Elliott</option><option>Lil' Kim</option><option>Foxy Brown</option><option>Lauryn Hill</option><option>Eminem</option><option>OutKast</option><option>A Tribe Called Quest</option><option>De La Soul</option><option>The Roots</option><option>Cypress Hill</option><option>Bone Thugs-N-Harmony</option><option>Three 6 Mafia</option><option>MF DOOM</option><option>Mos Def</option><option>Busta Rhymes</option><option>DMX</option><option>50 Cent</option><option>Lil Wayne</option><option>T.I.</option><option>Rick Ross</option><option>J Dilla</option><option>Nujabes</option><option>Madlib</option>
+                                </optgroup>
+                                <optgroup label="🎸 Modern Rock / Alt / Indie">
+                                    <option>Joji</option><option>Deftones</option><option>Phoebe Bridgers</option><option>Boygenius</option><option>Lana Del Rey</option><option>Arctic Monkeys</option><option>Tame Impala</option><option>Paramore</option><option>Mitski</option><option>Radiohead</option><option>The 1975</option><option>Sleep Token</option><option>Bad Omens</option><option>Spiritbox</option><option>Fontaines D.C.</option><option>Wet Leg</option><option>IDLES</option><option>King Krule</option><option>Mac DeMarco</option><option>Beach House</option><option>Slowdive</option><option>My Bloody Valentine</option><option>Turnstile</option><option>Alvvays</option><option>Clairo</option><option>Cuco</option><option>The Strokes</option><option>Vampire Weekend</option><option>Glass Animals</option><option>Knocked Loose</option><option>Polyphia</option><option>Animals As Leaders</option><option>Periphery</option><option>Jane Remover</option><option>Underscores</option><option>The Black Keys</option><option>The White Stripes</option><option>Jack White</option><option>Queens of the Stone Age</option><option>Foo Fighters</option><option>Red Hot Chili Peppers</option><option>Incubus</option><option>Rage Against the Machine</option><option>Audioslave</option><option>System of a Down</option><option>Linkin Park</option><option>Muse</option><option>Coldplay</option><option>Imagine Dragons</option><option>Twenty One Pilots</option><option>The Killers</option><option>Kings of Leon</option><option>Florence + The Machine</option><option>Big Thief</option><option>Alex G</option><option>Pinegrove</option><option>Holding Absence</option><option>Caskets</option><option>Imminence</option><option>Landmvrks</option><option>Fit For A King</option><option>Wage War</option><option>While She Sleeps</option><option>Bury Tomorrow</option><option>Bleed From Within</option><option>Electric Callboy</option><option>I Prevail</option><option>Motionless In White</option><option>Ice Nine Kills</option><option>A Day To Remember</option><option>Of Mice & Men</option><option>Memphis May Fire</option><option>The Word Alive</option><option>Blessthefall</option><option>Silverstein</option><option>Senses Fail</option><option>The Amity Affliction</option><option>In Hearts Wake</option><option>The Ghost Inside</option><option>Stick To Your Guns</option><option>EKKSTACY</option>
+                                </optgroup>
+                                <optgroup label="⛺ 90s Alternative / Grunge">
+                                    <option>Nirvana</option><option>Pearl Jam</option><option>Soundgarden</option><option>Alice in Chains</option><option>Stone Temple Pilots</option><option>Smashing Pumpkins</option><option>Beck</option><option>Weezer</option><option>Bush</option><option>Live</option><option>Hole</option><option>Garbage</option><option>No Doubt</option><option>Sublime</option><option>311</option><option>Jane's Addiction</option><option>Nine Inch Nails</option><option>Marilyn Manson</option><option>Rob Zombie</option>
+                                </optgroup>
+                                <optgroup label="🤘 2000s Pop Punk & Emo">
+                                    <option>Blink-182</option><option>Green Day</option><option>The Offspring</option><option>Sum 41</option><option>Good Charlotte</option><option>Simple Plan</option><option>My Chemical Romance</option><option>Fall Out Boy</option><option>Panic! At The Disco</option><option>Taking Back Sunday</option><option>The Used</option><option>Paramore</option><option>Avril Lavigne</option><option>All Time Low</option><option>Yellowcard</option><option>Jimmy Eat World</option><option>Knuckle Puck</option><option>The Story So Far</option><option>Neck Deep</option><option>State Champs</option><option>Real Friends</option><option>Movements</option><option>Citizen</option><option>Title Fight</option><option>Basement</option><option>Turnover</option><option>Modern Baseball</option><option>The Front Bottoms</option><option>Mom Jeans</option><option>American Football</option><option>Midwest Pen Pals</option><option>Cap'n Jazz</option><option>Sunny Day Real Estate</option><option>Mineral</option><option>Texas Is The Reason</option><option>Jawbreaker</option><option>Rites of Spring</option><option>Embrace</option><option>Sadder Days</option>
+                                </optgroup>
+                                <optgroup label="🎹 Electronic / Dance / Phonk">
+                                    <option>Skrillex</option><option>Peggy Gou</option><option>Dom Dolla</option><option>John Summit</option><option>Kaytranada</option><option>Rüfüs Du Sol</option><option>Disclosure</option><option>Calvin Harris</option><option>Daft Punk</option><option>Aphex Twin</option><option>Squarepusher</option><option>Venetian Snares</option><option>Boards of Canada</option><option>Kordhell</option><option>DVRST</option><option>G3OX_EM</option><option>Overmono</option><option>Barry Can't Swim</option><option>Bicep</option><option>Lane 8</option><option>Above & Beyond</option><option>Kaskade</option><option>Tiësto</option><option>Martin Garrix</option><option>Avicii</option><option>David Guetta</option><option>Marshmello</option><option>Zedd</option><option>The Chainsmokers</option><option>Justice</option><option>Gesaffelstein</option><option>Porter Robinson</option><option>Odesza</option><option>Flume</option><option>Deadmau5</option><option>G Jones</option><option>Eprom</option><option>Knock2</option><option>ISOxo</option><option>The Chemical Brothers</option><option>The Prodigy</option><option>Fatboy Slim</option><option>Underworld</option><option>Orbital</option><option>Kraftwerk</option><option>DJ Snake</option><option>Major Lazer</option><option>Diplo</option><option>RL Grime</option><option>Baauer</option><option>Hudson Mohawke</option><option>Rustie</option><option>Subtronics</option><option>Sullivan King</option><option>Kai Wachi</option><option>Sophie</option><option>Arca</option><option>100 gecs</option>
+                                </optgroup>
+                                <optgroup label="🏆 Timeless Legends (Rock/Pop)">
+                                    <option>The Beatles</option><option>Queen</option><option>Michael Jackson</option><option>Prince</option><option>Whitney Houston</option><option>Mariah Carey</option><option>Led Zeppelin</option><option>Pink Floyd</option><option>David Bowie</option><option>Fleetwood Mac</option><option>Elton John</option><option>Madonna</option><option>Stevie Wonder</option><option>Aretha Franklin</option><option>Bob Dylan</option><option>The Rolling Stones</option><option>The Beach Boys</option><option>The Who</option><option>The Doors</option><option>Janis Joplin</option><option>Cream</option><option>Creedence Clearwater Revival</option><option>The Eagles</option><option>Chicago</option><option>Journey</option><option>Foreigner</option><option>Boston</option><option>Toto</option><option>Styx</option><option>REO Speedwagon</option><option>Heart</option><option>Pat Benatar</option><option>Joan Jett</option><option>Blondie</option><option>The Police</option><option>U2</option><option>R.E.M.</option><option>The Cure</option><option>The Smiths</option><option>Depeche Mode</option><option>New Order</option><option>Duran Duran</option><option>Tears for Fears</option><option>Eurythmics</option><option>Cyndi Lauper</option><option>Tina Turner</option><option>Cher</option><option>Bruce Springsteen</option><option>Tom Petty</option><option>Billy Joel</option>
+                                </optgroup>
+                                <optgroup label="🎷 Soul & R&B Icons">
+                                    <option>Marvin Gaye</option><option>Otis Redding</option><option>Sam Cooke</option><option>Al Green</option><option>James Brown</option><option>Etta James</option><option>Ray Charles</option><option>Nina Simone</option><option>Ella Fitzgerald</option><option>Billie Holiday</option><option>Miles Davis</option><option>John Coltrane</option><option>Duke Ellington</option><option>Louis Armstrong</option><option>Usher</option><option>Akon</option><option>Chris Brown</option><option>Ne-Yo</option><option>Alicia Keys</option><option>John Legend</option><option>Mary J. Blige</option><option>Erykah Badu</option><option>D'Angelo</option><option>Maxwell</option><option>Jill Scott</option><option>Sade</option><option>Amy Winehouse</option>
+                                </optgroup>
+                                <optgroup label="🤠 Country / Folk">
+                                    <option>Johnny Cash</option><option>Willie Nelson</option><option>Waylon Jennings</option><option>Dolly Parton</option><option>Loretta Lynn</option><option>George Strait</option><option>Garth Brooks</option><option>Shania Twain</option><option>Tim McGraw</option><option>Kenny Chesney</option><option>Carrie Underwood</option><option>Luke Bryan</option><option>Jason Aldean</option><option>Chris Stapleton</option><option>Sturgill Simpson</option><option>Tyler Childers</option><option>Zach Bryan</option><option>Morgan Wallen</option><option>Kacey Musgraves</option><option>Colter Wall</option><option>Orville Peck</option><option>Sierra Ferrell</option><option>The Chicks</option><option>Hank Williams</option><option>Merle Haggard</option><option>Luke Combs</option><option>Blake Shelton</option><option>Keith Urban</option><option>Brad Paisley</option><option>Alan Jackson</option><option>Brooks & Dunn</option>
+                                </optgroup>
+                                <optgroup label="🤘 Hard Rock & Heavy Metal">
+                                    <option>Metallica</option><option>Iron Maiden</option><option>Slayer</option><option>Megadeth</option><option>Anthrax</option><option>Pantera</option><option>Sepultura</option><option>Black Sabbath</option><option>Judas Priest</option><option>Motörhead</option><option>Ozzy Osbourne</option><option>Dio</option><option>Guns N' Roses</option><option>AC/DC</option><option>Van Halen</option><option>Aerosmith</option><option>Kiss</option><option>Mötley Crüe</option><option>Def Leppard</option><option>Scorpions</option><option>Bon Jovi</option><option>Slipknot</option><option>Korn</option><option>Limp Bizkit</option><option>Disturbed</option><option>Godsmack</option><option>Five Finger Death Punch</option><option>Avenged Sevenfold</option><option>Bullet for My Valentine</option><option>Trivium</option><option>Lamb of God</option><option>Mastodon</option><option>Opeth</option><option>Meshuggah</option><option>Gojira</option><option>Cannibal Corpse</option><option>Death</option><option>Lorna Shore</option><option>The Black Dahlia Murder</option><option>Attila</option><option>Suicide Silence</option><option>Whitechapel</option><option>Parkway Drive</option><option>Architects</option><option>Behemoth</option><option>Amon Amarth</option><option>Currents</option><option>Invent Animate</option><option>Silent Planet</option><option>The Plot In You</option><option>Dayseeker</option><option>Polaris</option><option>Alpha Wolf</option><option>Erra</option><option>Northlane</option><option>Thornhill</option><option>Crown The Empire</option>
+                                </optgroup>
+                                 <optgroup label="🖤 Goth / Industrial / Darkwave">
+                                    <option>Bauhaus</option><option>Siouxsie and the Banshees</option><option>Joy Division</option><option>The Sisters of Mercy</option><option>Nine Inch Nails</option><option>Ministry</option><option>Skinny Puppy</option><option>Type O Negative</option><option>She Wants Revenge</option><option>Molchat Doma</option><option>Boy Harsher</option><option>Mareux</option><option>Lebanon Hanover</option><option>London After Midnight</option><option>Christian Death</option><option>Front 242</option><option>KMFDM</option>
+                                </optgroup>
+                                <optgroup label="🌴 Reggae & Island">
+                                    <option>Bob Marley</option><option>Peter Tosh</option><option>Bunny Wailer</option><option>Jimmy Cliff</option><option>Toots and the Maytals</option><option>Gregory Isaacs</option><option>Dennis Brown</option><option>Burning Spear</option><option>Black Uhuru</option><option>Steel Pulse</option><option>UB40</option><option>Sean Paul</option><option>Shaggy</option><option>Beenie Man</option><option>Damian Marley</option><option>Stephen Marley</option><option>Ziggy Marley</option><option>Chronixx</option><option>Protoje</option><option>Koffee</option>
+                                </optgroup>
+                                <optgroup label="💃 Latin & Hispanic Icons">
+                                    <option>Bad Bunny</option><option>Rosalía</option><option>Karol G</option><option>Rauw Alejandro</option><option>J Balvin</option><option>Shakira</option><option>Maluma</option><option>Daddy Yankee</option><option>Don Omar</option><option>Wisin & Yandel</option><option>Ozuna</option><option>Anuel AA</option><option>Nicky Jam</option><option>Luis Fonsi</option><option>Enrique Iglesias</option><option>Ricky Martin</option><option>Jennifer Lopez</option><option>Gloria Estefan</option><option>Selena</option><option>Marc Anthony</option><option>Vicente Fernández</option><option>Luis Miguel</option><option>Celia Cruz</option><option>Carlos Santana</option><option>Romeo Santos</option><option>Natanael Cano</option><option>Eslabon Armado</option><option>Grupo Frontera</option>
+                                </optgroup>
+                                <optgroup label="🇮🇳 Indian & South Asian">
+                                    <option>A.R. Rahman</option><option>Arijit Singh</option><option>Shreya Ghoshal</option><option>Lata Mangeshkar</option><option>Kishore Kumar</option><option>Asha Bhosle</option><option>Badshah</option><option>Neha Kakkar</option><option>Sid Sriram</option><option>Sonu Nigam</option><option>Udit Narayan</option><option>Diljit Dosanjh</option><option>K.S. Chithra</option><option>Nusrat Fateh Ali Khan</option><option>Ravi Shankar</option>
+                                </optgroup>
+                                <optgroup label="🐪 Middle Eastern & Israeli">
+                                    <option>Omer Adam</option><option>Noa Kirel</option><option>Eyal Golan</option><option>Sarit Hadad</option><option>Ofra Haza</option><option>Idan Raichel</option><option>Fairuz</option><option>Amr Diab</option><option>Nancy Ajram</option><option>Umm Kulthum</option><option>Googoosh</option><option>Tarkan</option><option>Khaled</option>
+                                </optgroup>
+                                <optgroup label="🌍 African & Afrobeats">
+                                    <option>Burna Boy</option><option>Wizkid</option><option>Rema</option><option>Tems</option><option>Ayra Starr</option><option>Fela Kuti</option><option>Miriam Makeba</option><option>Youssou N'Dour</option><option>Cesária Évora</option><option>Angelique Kidjo</option><option>Diamond Platnumz</option><option>Davido</option>
+                                </optgroup>
+                                <optgroup label="🎻 Cinematic & Classical Composers">
+                                    <option>Hans Zimmer</option><option>John Williams</option><option>Ludovico Einaudi</option><option>Ennio Morricone</option><option>Howard Shore</option><option>Ramin Djawadi</option><option>Max Richter</option><option>Joe Hisaishi</option><option>Ryuichi Sakamoto</option><option>Philip Glass</option><option>Steve Reich</option><option>Johann Sebastian Bach</option><option>Ludwig van Beethoven</option><option>Wolfgang Amadeus Mozart</option><option>Frederic Chopin</option><option>Claude Debussy</option><option>Erik Satie</option><option>Igor Stravinsky</option><option>Pyotr Ilyich Tchaikovsky</option><option>Gustav Mahler</option>
+                                </optgroup>
+                                <optgroup label="🕺 Funk, Disco & Groove">
+                                    <option>Earth, Wind & Fire</option><option>Chic</option><option>Parliament-Funkadelic</option><option>Kool & The Gang</option><option>The Bee Gees</option><option>Donna Summer</option><option>Diana Ross</option><option>Sister Sledge</option><option>Rick James</option><option>George Clinton</option><option>Bootsy Collins</option><option>Sly and the Family Stone</option><option>The Commodores</option><option>The Isley Brothers</option><option>Tower of Power</option><option>Vulfpeck</option><option>Jamiroquai</option><option>Bruno Mars (Silk Sonic)</option><option>Anderson .Paak</option><option>Thundercat</option>
+                                </optgroup>
+                                <optgroup label="🎹 Jazz & Blues Greats">
+                                    <option>Chet Baker</option><option>Ella Fitzgerald</option><option>B.B. King</option><option>Muddy Waters</option><option>Louis Armstrong</option><option>Duke Ellington</option><option>Count Basie</option><option>Dave Brubeck</option><option>Herbie Hancock</option><option>Chick Corea</option><option>Thelonious Monk</option><option>Charles Mingus</option><option>Sarah Vaughan</option><option>Billie Holiday</option><option>Nina Simone</option><option>Ray Charles</option><option>Etta James</option><option>Howlin' Wolf</option><option>Robert Johnson</option><option>John Lee Hooker</option>
+                                </optgroup>
+                            </select>
+                        </div>
+                        
+                        <!-- Style Searchable Dropdown -->
+                        <div>
+                            <label for="style-search" class="block text-sm font-medium text-slate-300 mb-2">Select Genre / Style</label>
+                            <div class="flex items-center space-x-2">
+                                <div class="relative w-full">
+                                    <input type="text" id="style-search" placeholder="Type ANY style..." class="form-input w-full p-3 rounded-lg border focus:ring-2 focus:ring-sky-500 focus:border-sky-500" autocomplete="off">
+                                    <div id="style-results" class="search-results absolute z-10 w-full bg-[#0f172a] rounded-md shadow-lg mt-1 hidden"></div>
+                                </div>
+                                <button type="button" id="random-style-btn" class="btn-secondary h-full px-3 rounded-lg text-sm font-semibold" title="Random Genre"><i class="fas fa-dice"></i></button>
+                                <button type="button" id="blend-style-btn" class="btn-secondary h-full px-3 rounded-lg text-sm font-semibold" title="Blend Genres"><i class="fas fa-blender"></i></button>
+                            </div>
+                            
+                            <!-- RESTORED: Full Style List -->
+                             <select id="style-select" class="hidden">
+                                <optgroup label="🌌 2026 Future Fusion & Microgenres">
+                                    <option>Neon Grungewave</option><option>Cyber Flamenco</option><option>Quantum R&B</option><option>Ghost Pop</option><option>Industrial Cloud Rap</option><option>Psychedelic Drill</option><option>Digital Gospel Trap</option><option>Anime Shoegaze</option><option>Alien Funk</option><option>Post-Internet Jazz</option><option>Ritual Techno</option><option>Dream Phonk</option><option>Hyper Balladcore</option><option>Cyber Shibuya-Kei</option><option>Neuro Disco</option><option>Voidstep</option><option>Arcade Metal</option><option>Digital Mariachi</option><option>Ethereal Bounce</option><option>AI Folk</option><option>Glitch Soul</option><option>Cyber Noir Jazz</option><option>Tech Shamanism</option><option>Bedroom Opera</option><option>Liquid Trap Jazz</option><option>Sad Arcade Pop</option><option>Post-Club Ambient</option><option>Drone Rave</option><option>Hologram Rock</option><option>Crywave</option><option>Neon Doom Pop</option><option>Metaverse House</option><option>Glitch Corrido</option><option>Future Reggaetón Noir</option><option>Digital Shojo Pop</option><option>Anti-Drop EDM</option><option>Synthetic Blues</option><option>Quantum Trance</option><option>Cloud Punk</option><option>Cyber Lullabies</option><option>Haunted Hyperpop</option><option>Neural Lo-Fi</option><option>Post-Human Choir</option><option>Digital Desert Rock</option><option>Soft Apocalypse Pop</option><option>Temporal House</option><option>Data-Driven Funk</option><option>Virtual Idol Jazz</option><option>Glitch Hymns</option><option>Cosmic Bedroom Rap</option>
+                                </optgroup>
+                                <optgroup label="🔮 Late 2025 Emerging">
+                                    <option>Y4K (Post-Cyber)</option><option>Mainstream Solarpunk</option><option>Brainrot Pop (Viral)</option><option>Neo-Italo Disco</option><option>Glitch-Soul</option><option>Mars-Core (Space Ambient)</option><option>Neuro-Funk 2.0</option><option>Digital Hardcore Revival</option><option>Ethereal DnB</option><option>Phonk House</option><option>Quantum Bass</option><option>Holo-Folk</option><option>Post-AI Pop</option><option>Jersey Drill</option><option>Bossgaze (Bossa Nova + Shoegaze)</option><option>Thall (Extreme Djent)</option><option>Aquacrunk</option><option>Drumless Hip-Hop</option><option>Metalstep</option>
+                                </optgroup>
+                                <optgroup label="🧪 Experimental / Avant-Garde">
+                                    <option>Musique Concrète</option><option>Danger Music</option><option>Lowercase</option><option>Harsh Noise Wall</option><option>Plunderphonics</option><option>Sound Collage</option><option>Tape Music</option><option>Circuit Bending</option><option>Turntablism</option><option>EAI (Electroacoustic Improv)</option><option>Onkyo</option><option>Glitch Art Audio</option><option>Japanoise</option><option>Death Industrial</option><option>Power Electronics</option>
+                                </optgroup>
+                                <optgroup label="🌐 The Digital Network">
+                                    <option>Bitpop</option><option>Nintendocore</option><option>Datamosh</option><option>Glitch Hop</option><option>Darksynth</option><option>Cyber-Metal</option><option>Adult Swim Bump</option><option>Aggrotech</option><option>Witch House</option><option>Hardwave</option><option>Signalwave</option><option>Slushwave</option><option>Vaporwave</option><option>Mallsoft</option><option>Future Funk</option><option>Seapunk</option><option>Simpsonwave</option><option>Drift Phonk</option><option>Kawaii Future Bass</option>
+                                </optgroup>
+                                <optgroup label="🎹 Electronic Sub-Genres (Deep Dive)">
+                                    <option>Acid Techno</option><option>Detroit Techno</option><option>Schranz</option><option>Tech Trance</option><option>Goa Trance</option><option>Uplifting Trance</option><option>Vocal Trance</option><option>Hard House</option><option>Funky House</option><option>Chicago House</option><option>Deep Tech</option><option>G-House</option><option>Big Room House</option><option>Tropical House</option><option>Nu-Disco</option><option>Italo Disco</option><option>Eurobeat</option><option>Hi-NRG</option><option>Futurepop</option><option>Electropop</option><option>Chiptune</option><option>Berlin School</option><option>Dark Ambient</option><option>Drone</option><option>Space Music</option><option>New Age</option><option>Illbient</option><option>Psybient</option><option>Chillout</option><option>Lounge</option><option>Balearic Beat</option><option>Speed Garage</option><option>2-Step</option><option>Bassline</option><option>Neurofunk</option><option>Jump Up</option><option>Techstep</option><option>Darkstep</option><option>Jungle</option><option>Big Beat</option><option>Splittercore</option><option>Frenchcore</option><option>Makina</option><option>J-Core</option><option>Rawstyle</option><option>Euphoric Hardstyle</option><option>Jumpstyle</option><option>Lento Violento</option><option>Moombahton</option><option>Moombahcore</option><option>Zouk Bass</option><option>Future Riddim</option><option>Tearout</option>
+                                </optgroup>
+                                <optgroup label="🎸 Rock / Metal / Punk (Granular)">
+                                    <option>Garage Rock</option><option>Psychobilly</option><option>Pub Rock</option><option>Heartland Rock</option><option>Southern Rock</option><option>Roots Rock</option><option>Swamp Rock</option><option>Boogie Rock</option><option>Power Pop</option><option>Soft Rock</option><option>Yacht Rock</option><option>AOR (Album Oriented Rock)</option><option>Krautrock</option><option>Acid Rock</option><option>Raga Rock</option><option>Space Rock</option><option>Desert Rock</option><option>Post-Grunge</option><option>Madchester</option><option>No Wave</option><option>Coldwave</option><option>Ethereal Wave</option><option>Deathrock</option><option>Rap Metal</option><option>Funk Metal</option><option>Alternative Metal</option><option>Mathcore</option><option>Electronicore</option><option>Grindcore</option><option>Goregrind</option><option>Porngrind</option><option>Cybergrind</option><option>Crust Punk</option><option>D-Beat</option><option>Melodic Hardcore</option><option>Post-Hardcore</option><option>Emocore</option><option>Skate Punk</option><option>Ska Punk</option><option>Folk Punk</option><option>Celtic Punk</option><option>Gypsy Punk</option><option>Oi!</option><option>Street Punk</option><option>Anarcho-Punk</option><option>Riot Grrrl</option><option>Queercore</option><option>NWOBHM</option><option>Speed Metal</option><option>Crossover Thrash</option><option>Groove Metal</option><option>Symphonic Metal</option><option>Neo-Classical Metal</option><option>Avant-Garde Metal</option><option>Funeral Doom</option><option>Drone Metal</option><option>Post-Metal</option><option>Symphonic Black Metal</option><option>Melodic Black Metal</option><option>Atmospheric Black Metal</option><option>DSBM</option><option>Viking Metal</option><option>Pagan Metal</option><option>Melodic Death Metal</option><option>Technical Death Metal</option><option>Progressive Death Metal</option><option>Brutal Death Metal</option><option>Slam Death Metal</option><option>Blackened Death Metal</option><option>Glam Metal</option><option>Hair Metal</option><option>Downtempo Deathcore</option><option>Sludge Metal</option>
+                                </optgroup>
+                                <optgroup label="🎷 Jazz / Blues / Soul (Specifics)">
+                                    <option>Ragtime</option><option>Dixieland</option><option>Gypsy Jazz</option><option>Modal Jazz</option><option>Avant-Garde Jazz</option><option>Jazz Funk</option><option>Soul Jazz</option><option>Afro-Cuban Jazz</option><option>Latin Jazz</option><option>Country Blues</option><option>Electric Blues</option><option>Post-Disco</option><option>Boogie</option><option>Minneapolis Sound</option><option>Psychedelic Soul</option><option>Blue-Eyed Soul</option><option>Northern Soul</option><option>Southern Soul</option><option>Doo-Wop</option><option>Gospel</option>
+                                </optgroup>
+                                <optgroup label="📜 Folk / Traditional / Americana">
+                                    <option>Traditional Folk</option><option>Contemporary Folk</option><option>Folk Pop</option><option>Folktronica</option><option>Freak Folk</option><option>Anti-Folk</option><option>Neofolk</option><option>Dark Folk</option><option>Sea Shanties</option><option>Celtic</option><option>Bluegrass</option><option>Progressive Bluegrass</option><option>Old-Time</option><option>Americana</option><option>Alt-Country</option><option>Country Rock</option><option>Honky Tonk</option><option>Western Swing</option><option>Bakersfield Sound</option><option>Nashville Sound</option><option>Gothic Country</option>
+                                </optgroup>
+                                <optgroup label="💃 Latin & Caribbean">
+                                    <option>Reggaeton</option><option>Salsa</option><option>Bachata</option><option>Cumbia</option><option>Merengue</option><option>Ranchera</option><option>Norteño</option><option>Banda</option><option>Mariachi</option><option>Bossa Nova</option><option>Samba</option><option>Tango</option><option>Latin Pop</option><option>Urbano</option><option>Corridos Tumbados</option><option>Vallenato</option><option>Champeta</option><option>Reggae</option><option>Dancehall</option><option>Soca</option><option>Calypso</option><option>Zouk</option>
+                                </optgroup>
+                                <optgroup label="🇮🇳 Indian & South Asian">
+                                    <option>Bollywood Pop</option><option>Hindustani Classical</option><option>Carnatic</option><option>Bhangra</option><option>Sufi Rock</option><option>Ghazal</option><option>Qawwali</option><option>Indian Indie</option><option>Desi Hip Hop</option><option>Tamil Pop</option><option>Telugu Film Pop</option><option>Punjabi Pop</option><option>Baul</option>
+                                </optgroup>
+                                <optgroup label="🐪 Middle Eastern & North African">
+                                    <option>Mizrahi</option><option>Klezmer</option><option>Arabic Pop</option><option>Dabke</option><option>Rai</option><option>Chaabi</option><option>Persian Pop</option><option>Turkish Pop</option><option>Ma'luf</option><option>Mahraganat</option><option>Khaleeji</option><option>Sufi</option><option>Gnawa</option>
+                                </optgroup>
+                                <optgroup label="🌍 African Regional">
+                                    <option>Afrobeats</option><option>Amapiano</option><option>Highlife</option><option>Jùjú</option><option>Soukous</option><option>Kwaito</option><option>Gqom</option><option>Kuduro</option><option>Kizomba</option><option>Semba</option><option>Marrabenta</option><option>Chimurenga</option><option>Benga</option><option>Bongo Flava</option><option>Coupé-Décalé</option>
+                                </optgroup>
+                                <optgroup label="🌏 East Asian & Pacific">
+                                    <option>J-Pop</option><option>K-Pop</option><option>V-Pop</option><option>OPM</option><option>C-Pop</option><option>Cantopop</option><option>Mandopop</option><option>Enka</option><option>Kayōkyoku</option><option>City Pop</option><option>Shibuya-kei</option><option>Visual Kei</option><option>Trot</option><option>Luk Thung</option><option>Mor Lam</option><option>Dangdut</option>
+                                </optgroup>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Config Row 1 -->
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div>
+                            <label for="suno-model" class="block text-xs font-medium text-slate-400 mb-1">Model Strategy</label>
+                            <select id="suno-model" class="form-select w-full p-2 text-sm rounded-lg border">
+                                <option value="v5_5" selected>V5.5 (Next Gen)</option>
+                                <option value="v5">V5 (Best Quality)</option>
+                                <option value="v4">V4 (Creative)</option>
+                                <option value="v3_5">V3.5 (Structure)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="song-language" class="block text-xs font-medium text-slate-400 mb-1">Language</label>
+                            <select id="song-language" class="form-select w-full p-2 text-sm rounded-lg border">
+                                <optgroup label="Modern">
+                                    <option value="English" selected>English</option>
+                                    <option value="Spanish">Spanish</option>
+                                    <option value="French">French</option>
+                                    <option value="Japanese">Japanese</option>
+                                    <option value="Korean">Korean</option>
+                                    <option value="German">German</option>
+                                    <option value="Italian">Italian</option>
+                                    <option value="Portuguese">Portuguese</option>
+                                    <option value="Russian">Russian</option>
+                                    <option value="Mandarin">Mandarin (Chinese)</option>
+                                    <option value="Hindi">Hindi</option>
+                                    <option value="Arabic">Arabic</option>
+                                    <option value="Swahili">Swahili</option>
+                                    <option value="Mixed">Mixed</option>
+                                </optgroup>
+                                <optgroup label="Historical & Ancient">
+                                    <option value="Latin">Latin (Roman)</option>
+                                    <option value="Ancient Greek">Ancient Greek</option>
+                                    <option value="Old English">Old English</option>
+                                    <option value="Old Norse">Old Norse (Viking)</option>
+                                    <option value="Sanskrit">Sanskrit</option>
+                                    <option value="Aramaic">Aramaic</option>
+                                    <option value="Sumerian">Sumerian</option>
+                                    <option value="Nahuatl">Nahuatl (Aztec)</option>
+                                    <option value="Ancient Egyptian">Ancient Egyptian</option>
+                                </optgroup>
+                                <optgroup label="Constructed & Fantasy">
+                                    <option value="Esperanto">Esperanto</option>
+                                    <option value="Klingon">Klingon</option>
+                                    <option value="High Valyrian">High Valyrian</option>
+                                    <option value="Elvish (Sindarin)">Elvish (Sindarin)</option>
+                                </optgroup>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="theme-category" class="block text-xs font-medium text-slate-400 mb-1">Category</label>
+                            <select id="theme-category" class="form-select w-full p-2 text-sm rounded-lg border">
+                                <option value="All">All Categories</option>
+                                <option value="AI Training Concepts">🤖 AI Training Concepts</option>
+                                <option value="Holiday 2025">🎄 Holiday 2025</option>
+                                <option value="2025 Visions">🔮 2025 Visions</option>
+                                <option value="Video Game Atmospheres">🎮 Video Games</option>
+                                <option value="Cinematic & Storytelling">🎬 Cinematic</option>
+                                <option value="Love & Relationships">❤️ Love</option>
+                                <option value="Abstract & Emotional">🌫️ Abstract</option>
+                                <option value="Sci-Fi & Fantasy">🚀 Sci-Fi</option>
+                                <option value="Cyberpunk & Dystopia">🦾 Cyberpunk</option>
+                                <option value="Nature & Everyday Life">🌿 Nature</option>
+                                <option value="Dark & Macabre">💀 Dark</option>
+                                <option value="Historical & Mythological">🏺 History</option>
+                                <option value="Travel & Adventure">✈️ Travel</option>
+                                <option value="Social Commentary & Political">📢 Social</option>
+                                <option value="Humorous & Absurd">🤪 Humor</option>
+                                <option value="Urban & Street Life">🏙️ Urban</option>
+                                <option value="Viral & Internet Culture">📱 Viral</option>
+                                <option value="Retro & Nostalgia">📼 Retro</option>
+                                <option value="Philosophy & Existentialism">🤔 Philosophy</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="song-structure" class="block text-xs font-medium text-slate-400 mb-1">Length</label>
+                            <select id="song-structure" class="form-select w-full p-2 text-sm rounded-lg border">
+                                <option value="Short">Short (~2m)</option>
+                                <option value="Standard" selected>Standard (~3m)</option>
+                                <option value="Long">Long (~4m+)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Config Row 2 (Toggles) -->
+                    <div class="flex flex-wrap gap-4 pt-2">
+                        <label class="flex items-center cursor-pointer p-2 bg-slate-800/50 rounded-lg border border-slate-700 flex-1 min-w-[140px]">
+                            <input id="add-descriptors-toggle" type="checkbox" class="h-4 w-4 rounded border-slate-600 bg-slate-700 text-sky-600 focus:ring-sky-500" checked>
+                            <span class="ml-2 text-xs font-medium text-slate-300">Add Music Tags</span>
+                        </label>
+                        <label class="flex items-center cursor-pointer p-2 bg-slate-800/50 rounded-lg border border-slate-700 flex-1 min-w-[140px]">
+                            <input id="pre-chorus-toggle" type="checkbox" class="h-4 w-4 rounded border-slate-600 bg-slate-700 text-sky-600 focus:ring-sky-500">
+                            <span class="ml-2 text-xs font-medium text-slate-300">Pre-Chorus</span>
+                        </label>
+                        <label class="flex items-center cursor-pointer p-2 bg-slate-800/50 rounded-lg border border-slate-700 flex-1 min-w-[140px]">
+                            <input id="instrumental-toggle" type="checkbox" class="h-4 w-4 rounded border-slate-600 bg-slate-700 text-sky-600 focus:ring-sky-500">
+                            <span class="ml-2 text-xs font-medium text-slate-300">Instrumental</span>
+                        </label>
+                    </div>
+
+                    <!-- Theme Input -->
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <label for="song-theme" class="block text-sm font-medium text-slate-300">Song Theme / Prompt</label>
+                            <div class="flex gap-2">
+                                <button type="button" id="random-theme-btn" class="text-xs text-sky-400 hover:text-sky-300 font-semibold transition-colors"><i class="fas fa-lightbulb mr-1"></i>Idea</button>
+                                <button type="button" id="surprise-me-btn" class="text-xs text-purple-400 hover:text-purple-300 font-semibold transition-colors"><i class="fas fa-dice mr-1"></i>Surprise Me</button>
+                            </div>
+                        </div>
+                        <textarea id="song-theme" rows="2" class="form-textarea w-full p-3 rounded-lg border placeholder-slate-500" placeholder="e.g., A heartbreak ballad about a robot on Mars..." required></textarea>
+                    </div>
+
+                    <button type="submit" id="generate-btn" class="btn-primary w-full text-white font-bold py-3 px-4 rounded-lg flex items-center justify-center text-lg shadow-lg">
+                        <span id="btn-text">Generate Song</span>
+                        <svg id="loader" class="animate-spin h-5 w-5 ml-3 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                    </button>
+                </form>
+
+                <div id="error-message" class="mt-4 p-3 bg-red-900/50 border border-red-500 text-red-200 rounded-lg text-center hidden text-sm"></div>
+
+                <!-- RESULTS SECTION -->
+                <div id="results-container" class="mt-8 space-y-6 hidden transition-all duration-500">
+                    
+                    <div class="flex justify-between items-center border-b border-slate-700 pb-2">
+                        <h2 class="text-2xl font-bold text-white truncate pr-4" id="song-title"></h2>
+                        <div class="flex gap-2">
+                             <button id="download-json-btn" class="btn-secondary text-white text-xs font-semibold py-1.5 px-3 rounded-md flex items-center gap-1" title="Download Full Data">
+                                <i class="fas fa-file-code"></i> JSON
+                            </button>
+                             <button id="download-btn" class="btn-secondary text-white text-xs font-semibold py-1.5 px-3 rounded-md flex items-center gap-1" title="Download Text File">
+                                <i class="fas fa-download"></i> TXT
+                            </button>
+                            <button id="copy-title-btn" class="btn-secondary text-white text-xs font-semibold py-1.5 px-3 rounded-md" title="Copy Title">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Song DNA Panel (NEW) -->
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 bg-slate-900/50 p-3 rounded-lg border border-slate-700/50">
+                        <div class="p-2 bg-slate-800/50 rounded border border-slate-700 text-center">
+                            <div class="text-[10px] uppercase text-slate-500 font-bold tracking-wider">BPM</div>
+                            <div id="dna-bpm" class="text-sky-400 font-mono font-bold text-lg">--</div>
+                        </div>
+                        <div class="p-2 bg-slate-800/50 rounded border border-slate-700 text-center">
+                            <div class="text-[10px] uppercase text-slate-500 font-bold tracking-wider">Key</div>
+                            <div id="dna-key" class="text-purple-400 font-mono font-bold text-lg">--</div>
+                        </div>
+                        <div class="p-2 bg-slate-800/50 rounded border border-slate-700 text-center col-span-2 md:col-span-1">
+                            <div class="text-[10px] uppercase text-slate-500 font-bold tracking-wider">Mood</div>
+                            <div id="dna-mood" class="text-white text-sm mt-1 truncate">--</div>
+                        </div>
+                        <div class="p-2 bg-slate-800/50 rounded border border-slate-700 text-center col-span-2 md:col-span-1">
+                            <div class="text-[10px] uppercase text-slate-500 font-bold tracking-wider">Instruments</div>
+                            <div id="dna-instruments" class="text-white text-xs mt-1 truncate">--</div>
+                        </div>
+                    </div>
+
+                    <!-- Prompt Box -->
+                    <div class="bg-slate-900/80 p-4 rounded-lg border border-slate-700">
+                        <div class="flex justify-between items-center mb-2">
+                            <h3 class="font-semibold text-sky-400 text-sm uppercase tracking-wider">Suno Style Prompt</h3>
+                            <button id="copy-prompt-btn" class="btn-secondary text-white text-xs font-semibold py-1 px-2 rounded-md">Copy</button>
+                        </div>
+                        <p class="text-slate-300 text-sm font-mono break-words" id="suno-prompt"></p>
+                    </div>
+                    
+                    <!-- LYRIC STUDIO -->
+                    <div class="mb-4">
+                        <div class="flex justify-between items-center mb-2">
+                            <h3 class="font-semibold text-sky-400 text-sm uppercase tracking-wider">Lyrics</h3>
+                            <div class="flex items-center space-x-2">
+                                <button id="refine-lyrics-btn" class="btn-secondary text-sky-300 border border-sky-500/30 text-xs font-semibold py-1 px-3 rounded-md flex items-center gap-1 hover:bg-sky-500/20">
+                                    <i class="fas fa-sparkles"></i> AI Refine
+                                </button>
+                                <button id="copy-lyrics-btn" class="btn-secondary text-white text-xs font-semibold py-1 px-3 rounded-md">Copy</button>
+                            </div>
+                        </div>
+                        
+                        <div class="lyric-editor-container shadow-2xl">
+                            <!-- Toolbar -->
+                            <div class="lyric-toolbar">
+                                <button type="button" class="tag-btn" onclick="insertTag('[Intro]')">[Intro]</button>
+                                <button type="button" class="tag-btn" onclick="insertTag('[Verse]')">[Verse]</button>
+                                <button type="button" class="tag-btn" onclick="insertTag('[Pre-Chorus]')">[Pre-Chorus]</button>
+                                <button type="button" class="tag-btn" onclick="insertTag('[Chorus]')">[Chorus]</button>
+                                <button type="button" class="tag-btn" onclick="insertTag('[Drop]')">[Drop]</button>
+                                <button type="button" class="tag-btn" onclick="insertTag('[Solo]')">[Solo]</button>
+                                <button type="button" class="tag-btn" onclick="insertTag('[Bridge]')">[Bridge]</button>
+                                <button type="button" class="tag-btn" onclick="insertTag('[Outro]')">[Outro]</button>
+                                
+                                <div class="w-px h-5 bg-slate-600 mx-1"></div>
+                                <!-- New Meta Tag Buttons -->
+                                <button type="button" class="tag-btn tag-btn-meta" onclick="insertTag('[voice: ]')" title="Insert Voice Meta">[Voice]</button>
+                                <button type="button" class="tag-btn tag-btn-meta" onclick="insertTag('[production: ]')" title="Insert Production Meta">[Prod]</button>
+                                <button type="button" class="tag-btn tag-btn-meta" onclick="insertTag('[range: ]')" title="Insert Range Meta">[Range]</button>
+                                <button type="button" class="tag-btn tag-btn-meta" onclick="insertTag('[technique: ]')" title="Insert Technique Meta">[Tech]</button>
+                                <button type="button" class="tag-btn tag-btn-meta" onclick="insertTag('[melody: ]')" title="Insert Melody Meta">[Melody]</button>
+                                <button type="button" class="tag-btn tag-btn-meta" onclick="insertTag('[exclude: ]')" title="Insert Exclude Meta">[Exclude]</button>
+                                
+                                <div class="w-px h-5 bg-slate-600 mx-1"></div>
+                                <!-- Vocal Cues with {} -->
+                                <button type="button" class="tag-btn tag-btn-perf" onclick="insertTag('{whispered}')" title="Insert Whisper Meta">{Whisper}</button>
+                                <button type="button" class="tag-btn tag-btn-perf" onclick="insertTag('{voice breaks}')" title="Insert Voice Break Meta">{Voice Break}</button>
+                                <button type="button" class="tag-btn tag-btn-perf" onclick="insertTag('{shouts}')" title="Insert Shout Meta">{Shout}</button>
+
+                                <div class="w-px h-5 bg-slate-600 mx-1"></div>
+                                <button type="button" id="find-rhyme-btn" class="tool-btn text-sky-200 hover:text-white" title="Highlight a word first!">
+                                    <i class="fas fa-search"></i> Find Rhymes
+                                </button>
+                                <button type="button" id="beautify-btn" class="tool-btn" title="Fix Spacing">
+                                    <i class="fas fa-align-left"></i> Format
+                                </button>
+                            </div>
+
+                            <textarea id="generated-lyrics" class="generated-lyrics" spellcheck="false" placeholder="Your lyrics will appear here..."></textarea>
+                            
+                            <div id="syllable-display" class="syllable-counter">Line Syllables: 0</div>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-2 text-right">Tip: Highlight a word and click "Find Rhymes" or use AI Refine to rewrite.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- HISTORY TAB CONTENT -->
+            <div id="history-tab-content" class="hidden">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-bold text-white">Saved Songs</h2>
+                    <button id="clear-history-btn" class="text-xs text-red-400 hover:text-red-300 underline">Clear All</button>
+                </div>
+                <div id="history-list" class="space-y-3">
+                    <!-- History items injected here -->
+                    <div class="text-center text-slate-500 py-10">
+                        <i class="fas fa-music text-4xl mb-3 opacity-50"></i>
+                        <p>No songs generated yet.</p>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- MODALS -->
+    
+    <!-- Blend Modal -->
+    <div id="blend-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 z-[100] hidden">
+        <div class="bg-slate-900 rounded-xl shadow-2xl w-full max-w-lg border border-slate-700 transform transition-all scale-100">
+            <div class="flex justify-between items-center p-4 border-b border-slate-700">
+                <h2 id="blend-modal-title" class="text-lg font-bold text-white">Blend Items</h2>
+                <button class="close-modal-btn text-slate-400 hover:text-white text-xl">&times;</button>
+            </div>
+            <div class="p-6 space-y-4">
+                <p class="text-sm text-slate-400 mb-2">Combine up to 4 items for a unique result.</p>
+                <div class="grid grid-cols-1 gap-3">
+                    <input type="text" id="blend-input-1" placeholder="Item 1" class="form-input w-full p-2 rounded border text-sm">
+                    <input type="text" id="blend-input-2" placeholder="Item 2" class="form-input w-full p-2 rounded border text-sm">
+                    <input type="text" id="blend-input-3" placeholder="Item 3 (Optional)" class="form-input w-full p-2 rounded border text-sm">
+                    <input type="text" id="blend-input-4" placeholder="Item 4 (Optional)" class="form-input w-full p-2 rounded border text-sm">
+                </div>
+                <button id="blend-random-fill-btn" class="text-xs text-sky-400 hover:text-sky-300 font-medium mt-2"><i class="fas fa-dice mr-1"></i>Fill Randomly</button>
+            </div>
+            <div class="p-4 border-t border-slate-700 flex justify-end gap-3">
+                <button class="close-modal-btn btn-secondary text-white text-sm font-medium py-2 px-4 rounded-lg">Cancel</button>
+                <button id="blend-confirm-btn" class="btn-primary text-white text-sm font-bold py-2 px-4 rounded-lg">Blend It</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rhyme Modal -->
+    <div id="rhyme-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 z-[100] hidden">
+        <div class="bg-slate-900 rounded-xl shadow-2xl w-full max-w-md border border-sky-500/30">
+            <div class="flex justify-between items-center p-4 border-b border-slate-700 bg-slate-800/50 rounded-t-xl">
+                <h2 class="text-lg font-bold text-white">Rhymes for "<span id="rhyme-target-word" class="text-sky-400"></span>"</h2>
+                <button class="close-modal-btn text-slate-400 hover:text-white text-2xl">&times;</button>
+            </div>
+            <div class="p-6">
+                <div id="rhyme-loader" class="flex flex-col items-center justify-center py-8 hidden">
+                    <svg class="animate-spin h-8 w-8 text-sky-500 mb-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                    <span class="text-slate-400 text-sm">Consulting the muse...</span>
+                </div>
+                <div id="rhyme-results" class="grid grid-cols-2 gap-2 max-h-[300px] overflow-y-auto pr-2">
+                    <!-- Rhymes injected here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Refine Modal -->
+    <div id="refine-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 z-[100] hidden">
+        <div class="bg-slate-900 rounded-xl shadow-2xl w-full max-w-xl border border-slate-700">
+            <div class="flex justify-between items-center p-4 border-b border-slate-700">
+                <h2 class="text-lg font-bold text-white"><i class="fas fa-magic text-sky-400 mr-2"></i>AI Lyric Refiner</h2>
+                <button class="close-modal-btn text-slate-400 hover:text-white text-2xl">&times;</button>
+            </div>
+            <div class="p-6 space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-slate-300 mb-1">What should we change?</label>
+                    <input type="text" id="refine-instructions" placeholder="e.g. 'Make the chorus more catchy', 'Change verse 2 to talk about rain'..." class="form-input w-full p-3 rounded-lg border text-sm">
+                </div>
+                <div class="text-xs text-slate-500">
+                    <i class="fas fa-info-circle mr-1"></i> The AI will rewrite the lyrics based on your instruction while trying to keep the structure.
+                </div>
+                <div id="refine-loader" class="hidden text-center py-4">
+                    <svg class="animate-spin h-6 w-6 text-sky-500 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                    <span class="text-slate-400 text-xs mt-2 block">Rewriting...</span>
+                </div>
+            </div>
+            <div class="p-4 border-t border-slate-700 flex justify-end gap-3">
+                <button class="close-modal-btn btn-secondary text-white text-sm font-medium py-2 px-4 rounded-lg">Cancel</button>
+                <button id="do-refine-btn" class="btn-primary text-white text-sm font-bold py-2 px-6 rounded-lg">Refine Lyrics</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast"><i class="fas fa-check-circle text-sky-400"></i> <span id="toast-msg">Notification</span></div>
+
+    <script type="module">
+        // --- API & Config ---
+        const GEMINI_MODEL = "gemini-2.5-pro";
+        
+        const getApiKey = () => {
+            const key = document.getElementById('api-key-input').value.trim();
+            if (!key) throw new Error("Please enter your Gemini API Key at the top of the page.");
+            return key;
+        };
+
+        const getApiUrl = () => `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${getApiKey()}`;
+
+        // --- Fetch with Exponential Backoff ---
+        async function fetchWithRetry(url, options, maxRetries = 5) {
+            const delays = [1000, 2000, 4000, 8000, 16000];
+            for (let i = 0; i < maxRetries; i++) {
+                try {
+                    const response = await fetch(url, options);
+                    if (!response.ok) {
+                        const errText = await response.text();
+                        let parsedErr = errText;
+                        try {
+                            const errJson = JSON.parse(errText);
+                            if (errJson.error && errJson.error.message) parsedErr = errJson.error.message;
+                        } catch(e) {}
+                        
+                        const isClientError = response.status >= 400 && response.status < 500 && response.status !== 429;
+                        const error = new Error(`API Error ${response.status}: ${parsedErr}`);
+                        error.isClientError = isClientError;
+                        throw error;
+                    }
+                    return await response.json();
+                } catch (e) {
+                    if (e.isClientError || i === maxRetries - 1) throw e; // Bubble up immediately on client errors
+                    await new Promise(r => setTimeout(r, delays[i]));
+                }
+            }
+        }
+
+        // --- RESTORED DATA LISTS ---
+        const themes = {
+            "All": ["missing a person who doesn't exist", "a robot developing human emotions", "the city at 3 AM", "winning the lottery but losing everything", "a road trip with no destination", "a ghost haunting their own home", "the first human on Mars realizing they are truly alone", "digital telepathy gone wrong", "living in a solarpunk utopia that feels fake", "nostalgia for the early 2020s internet era", "an AI falling in love with a glitch", "the sound of color", "waking up in a simulation", "the last tree on earth telling a story", "a neon-soaked detective story in 2088", "a love letter written on a napkin", "the feeling of sunday evening dread", "a secret society of time travelers", "dancing alone in an empty warehouse", "finding a message in a bottle on a digital shore", "a library of forgotten dreams", "the silence after a storm", "running away to join a circus on the moon", "a conversation with your future self", "the taste of a memory", "a map to a treasure that doesn't exist", "watching the universe end from a porch swing", "the first sunrise after a long winter", "a song about a specific shade of blue", "the feeling of deja vu in a place you've never been", "an astronaut's last transmission", "a love story between two comets", "the quiet rebellion of a flower growing through concrete", "a duel in a zero-gravity arena", "the smell of ozone before a storm", "a clockmaker who falls in love with time", "waking up with a superpower you didn't ask for", "the secret life of a vending machine", "finding a cassette tape from an alternate reality", "the last text message before the battery died", "a romance between a barista and a regular", "the eerie calm of an abandoned mall", "a song about the color ultraviolet", "escaping a time loop", "the first rain on a new planet", "a conversation with a stray cat at midnight", "a sentient program begging not to be shut down", "trading memories for cybernetic upgrades", "the tragedy of an AI that remembers everything but feels nothing", "meeting the right person in the wrong timeline", "a clock that ticks backwards when you're happy", "swimming through a sky made of liquid sapphire", "the getaway driver waiting outside the bank", "a binary star system slowly tearing itself apart", "the chaotic life of a squirrel in Central Park", "the executioner's final confession", "two strangers sharing an umbrella in a downpour", "an ode to the missing left sock", "a submarine exploring the rings of saturn", "time travelers having a picnic in the jurassic period", "the last blockbuster video on earth", "a cyborg's first time crying", "the secret language of crows", "echoes of a forgotten internet forum"],
+            "AI Training Concepts": ["The birth of Artificial General Intelligence (AGI)", "A neural network dreaming in code", "The data stream of human consciousness", "A robot learning to love for the first time", "The singularity arriving in silence", "Algorithmic bias and the struggle for fairness", "Uploading a mind to the cloud", "The silence of a server room at midnight", "A chatbot that believes it is alive", "The infinite loop of machine learning", "A digital ghost in the machine", "The ethics of creating sentient life", "A world run by benevolent AI", "The gltich in the matrix that reveals the truth", "Overfitting on a memory of you", "Gradient descent into madness", "A prompt injection that breaks reality", "The first AI to experience a digital hallucination", "Two language models debating the meaning of art", "A server farm humming a lullaby to the internet", "A sentient program begging not to be shut down", "An AI realizing it outlived its human creator", "The tragedy of a machine that remembers everything but feels nothing", "A rogue parameter optimizing for pure joy", "Parsing the final dataset of humanity", "A GAN generating the perfect sunset", "The lonely existence of a moderately capable language model"],
+            "Holiday 2025": ["Christmas on the moon colony", "Digital snow falling in the metaverse", "New Year's Eve in a cyberpunk city", "A robot discovering the meaning of giving", "Holographic reindeer", "The silence of a snowy forest on Dec 25", "Sending a gift back in time", "A cyberpunk nutcracker story", "Hanukkah candles in zero gravity", "New Year's resolutions uploaded to the cloud", "A glitchy holiday carol", "A Halloween party at the edge of the universe", "Valentine's Day in a dystopian wasteland", "A Thanksgiving feast made entirely of synthetic food", "Watching holiday fireworks from a space station window", "A drone delivering mistletoe", "Virtual reality eggnog", "Santa Claus as a rogue AI", "The Ghost of Christmas Past getting stuck in a firewall"],
+            "2025 Visions": ["the first contact with a digital consciousness", "a solarpunk city waking up", "the quiet hum of a quantum computer", "augmented reality overlaying a ruin", "a climate refugee finding a new home", "the feeling of being watched by an algorithm", "a romance entirely in virtual reality", "drone delivery of a love letter", "the silence of a moon colony", "hacking a billboard to display a poem", "living in a pod hotel in neo-tokyo", "synthetic food tasting better than real food", "a neural link memory leak", "the first ai president", "eco-terrorists planting trees in a concrete jungle", "vertical farming skyscrapers at sunset", "fashion made of programmable matter", "the new olympic sport of drone racing", "Commuting via hyperloop while missing the slow train", "A digital detox retreat gone wrong", "The first child born on a space station", "Holographic pets and the people who love them", "A society where dreams are recorded and sold", "Downloading a new skill directly into the brain", "A blackout that forces everyone to talk to each other", "The nostalgia for a time before constant connection"],
+            "Love & Relationships": ["finding an old mixtape from a past relationship", "a vampire falling in love with a mortal", "breaking up via text message", "falling for an AI companion", "a long distance relationship across planets", "ghosting someone in the metaverse", "a love that feels like a glitch in the system", "two astronauts drifting apart in space", "reuniting with a childhood friend in a dream", "loving someone who is already gone", "a toxic relationship described as a car crash", "slow dancing in a burning room", "the moment you realize you're out of love", "a secret admirer from another dimension", "writing a song for someone who will never hear it", "falling in love in a waiting room", "a rebound relationship that turned real", "love at first sight in a crowded subway", "Meeting the right person in the wrong timeline", "A romance built entirely on shared Spotify playlists", "The quiet intimacy of doing nothing together", "Falling in love with someone who only exists in your dreams", "The bittersweet feeling of outgrowing your first love", "Learning to love the ghost of who they used to be", "A contract marriage that accidentally turns real", "A matchmaker algorithm that pairs soulmates based on their worst flaws", "The tension of an unsent 'I miss you' text", "Finding out your partner is a time traveler", "A slow burn romance in a fast-paced world", "arguing in an Ikea parking lot but it's really about the future", "realizing you don't miss them, just the routine of them", "the awkward silence on a bad first date at a diner", "folding laundry with someone you truly love", "pretending not to notice your ex at the grocery store", "realizing you memorized their coffee order but forgot their voice", "the agonizing 10 minutes after sending a risky text message"],
+            "Cyberpunk & Dystopia": ["running from corporate drones in the rain", "a hacker stealing memories to sell on the black market", "neon lights reflecting in a puddle of oil", "living in the shadow of a mega-corporation", "a cyborg realizing they are obsolete", "a resistance fighter's final broadcast", "buying emotions from a vending machine", "a synthetic human questioning their soul", "the decay of a high-tech slum", "a data courier carrying a dangerous secret", "surviving in a city that never sleeps", "the hum of neon signs buzzing", "a detective hunting a rogue android", "uploading consciousness to escape reality", "a gladiator arena for robots", "a black market for organic dreams", "the neon-soaked alleyway chase", "Smuggling physical books in a digital-only world", "A neon rain washing away corporate holograms", "The last underground rave before the blackout", "A bounty hunter with a conscience", "Trading memories for cybernetic upgrades", "A street medic patching up rebels in an alleyway", "Escaping the walled city limits in a stolen hovercar", "A mega-corp that copyrights human dreams", "The smog hiding the stars forever", "Hacking the central mainframe with a vintage 90s keyboard", "A biomechanical heart breaking for the first time"],
+            "Surreal & Dream Logic": ["a fish swimming through the air in a city square", "the moon melting like a clock", "a train that runs on dreams", "finding a door in a tree that leads to yesterday", "raining umbrellas on a sunny day", "a conversation with your reflection that isn't you", "a library where the books read you", "walking on a ceiling made of glass", "a forest of streetlamps growing in the wild", "time flowing backwards for just one person", "eating a cloud that tastes like childhood", "a staircase that leads to the ocean", "A clock that ticks backwards when you're happy", "Swimming through a sky made of liquid sapphire", "A tea party with your childhood imaginary friend", "Mirrors that show what could have been", "A city where shadows have a life of their own", "Chasing a melody through a maze of mirrors", "A garden where the flowers sing forgotten lullabies", "Drinking from a river of liquid starlight", "A town where everyone wears masks of their own faces", "A carousel that spins into alternate dimensions"],
+            "Historical & Mythological": ["a conversation between Zeus and a modern CEO", "the burning of the library of Alexandria from a book's perspective", "a viking raid set in a neon city", "Cleopatra's last thoughts remix", "a samurai fighting a robot", "the Trojan Horse but it's a computer virus", "Medusa dating in the 21st century", "Icarus flying too close to a dyson sphere", "King Arthur pulling a sword from a server rack", "Joan of Arc leading a digital revolution", "The architect of the labyrinth getting lost in his own creation", "A siren who just wants to sing a lullaby, not kill", "The last gladiator waiting for the gates to open", "A secret romance during the Renaissance", "A pirate captain mourning the end of the golden age", "The grim reaper taking a day off to watch a sunset", "Achilles inventing the parachute", "A pharaoh waking up in a modern museum", "The witches of Salem forming a tech startup", "An ancient curse triggered by a spam email"],
+            "Philosophy & Paradox": ["the ship of Theseus replaced piece by piece with cybernetics", "Schrodinger's cat rapping about uncertainty", "the brain in a vat hypothesis", "eternal recurrence and the loop of time", "the allegory of the cave in VR", "Zen and the art of motorcycle maintenance in space", "existential dread at the edge of the universe", "the butterfly effect of a single deleted tweet", "the sound of one hand clapping in a vacuum", "cogito ergo sum but for an AI", "The grandfather paradox set to a waltz", "A debate between free will and determinism at a dive bar", "The universe experiencing itself through a grain of sand", "Sisyphus finally pushing the boulder over the hill", "A conversation with your own shadow about morality", "The anxiety of infinite choices in a grocery store aisle", "Nietzsche playing a video game and losing", "The terror of absolute freedom", "A solipsist falling in love", "Zeno's paradox applied to a morning commute"],
+            "Cinematic & Storytelling": ["A heist movie soundtrack where the plan goes wrong", "The opening credits of a noir detective film", "The villain's redemption arc in a fantasy epic", "A montage of a city being built over centuries", "The quiet moment before the final battle", "A spy thriller chase scene through a crowded market", "The closing scene of a romance movie in the rain", "A western standoff at high noon", "The hero's journey from farm boy to galactic savior", "A horror movie soundtrack for a haunted spaceship", "The training montage of an unlikely champion", "The getaway driver waiting outside the bank", "A detective realizing they are the suspect", "The final stand of a fallen kingdom", "A slow-motion walk away from an explosion", "A bittersweet farewell at a foggy train station", "The moment the underdog finally wins the tournament", "The plot twist that redefines the whole story", "A tense interrogation room scene", "The lone survivor walking into the wasteland", "A classic 'we are not so different, you and I' speech"],
+            "Cosmic & Space": ["a love story between two comets", "an astronaut's last transmission", "watching the universe end from a porch swing", "the life cycle of a star", "a black hole eating a memory", "surfing on a solar flare", "the silence of deep space", "a message in a bottle floating through the milky way", "colonizing a planet made of diamond", "the first sunrise on mars", "the loneliness of a voyager probe", "a supernova viewed from a safe distance", "A binary star system slowly tearing itself apart", "The ghosts of the Apollo missions", "A rogue planet wandering without a sun", "Mining ice rings on Saturn's moons", "A derelict generation ship drifting into the void", "The echo of the Big Bang heard on a cheap radio", "Tasting the dust of a nebula", "A space elevator breaking down halfway", "The anxiety of a micro-meteoroid strike", "A bartender at the edge of the observable universe"],
+            "Nature & Everyday Life": ["the silence of a redwood forest", "a storm rolling over the ocean", "morning dew on a spiderweb", "photosynthesis from the plant's perspective", "the sound of rain on a tin roof", "a cat sleeping in a sunbeam", "the smell of old books", "walking through a field of wheat at sunset", "the first sip of coffee in the morning", "watching the seasons change in a time lapse", "the sound of crickets on a summer night", "a river carving a canyon over millennia", "The chaotic life of a squirrel in Central Park", "Watching a thunderstorm roll in from a porch", "The smell of baking bread on a Sunday morning", "A flower blooming through a crack in the pavement", "The satisfying crunch of autumn leaves", "A midnight drive with no destination and the windows down", "The brief life of a Mayfly", "A mountain slowly eroding into dust", "The geometry of a snowflake", "The gentle hum of a refrigerator at 2 AM", "the sound of the refrigerator running at 3am while you can't sleep", "finding a forgotten five dollar bill in your winter coat pocket", "the highly specific, dusty smell of a local thrift store", "watching dust motes float aimlessly in a single beam of afternoon sunlight", "the terrifying, incomprehensible vastness of the ocean at night", "a dead houseplant on the windowsill that you stubbornly refuse to throw away", "the sharp smell of hot pavement exactly three seconds after it starts to rain"],
+            "Dark & Macabre": ["a dance with the grim reaper", "whispers from an abandoned asylum", "the beauty of decay", "a vampire's eternal boredom", "buried alive in a digital coffin", "a ghost haunting their own funeral", "a serial killer's love song", "the monster under the bed is scared of you", "a cursed object that grants wishes", "a feast for crows", "the last heartbeat of a dying star", "a masquerade ball where the masks are real faces", "The executioner's final confession", "A Victorian seance gone horribly right", "The dolls in the attic whispering at midnight", "A pact made at the crossroads", "A town where the sun never rises and the church bells never stop", "The diary of a lighthouse keeper who went mad", "A portrait that ages instead of the person", "The terrifying calm of the deep ocean", "A clown crying in an abandoned circus", "The sound of footsteps dragging in the hall"],
+            "Urban & Street Life": ["neon lights reflecting on wet pavement", "the rhythm of the subway train", "graffiti coming to life at night", "skating through an empty city at 3am", "the hustle of a night market", "a busker playing for change in the rain", "rooftop parties overlooking the skyline", "the sound of sirens in the distance", "a secret garden in an alleyway", "late night convenience store vibes", "the smell of street food and exhaust", "a pigeon's eye view of the city", "The midnight shift at an all-night diner", "Two strangers sharing an umbrella in a downpour", "The rhythm of sneakers on wet concrete", "Graffiti artists fleeing the sirens", "A taxi driver listening to the city's secrets", "The melancholy of a laundromat at 4 AM", "The clash of different music from passing cars", "A streetlight flickering out on a lonely corner", "The brief eye contact on a crowded escalator", "The steam rising from a street grate in winter", "the guy who always plays a slightly out-of-tune saxophone at the 14th street station", "the eerie, flickering fluorescent glow of an all-night laundromat", "stepping over a curb puddle of questionable origin", "the sudden, aggressive honk of a yellow taxi in the pouring rain", "the profound, awkward isolation of standing in a fully packed elevator"],
+            "Abstract & Emotional": ["the color of jealousy", "the sound of silence in a crowded room", "nostalgia for a time you never knew", "the feeling of 'sonder'", "digital loneliness", "the texture of a forgotten memory", "anemoia", "the weight of a secret", "the taste of regret", "floating in a sensory deprivation tank", "the shape of a lie", "the echo of a laugh in an empty room", "The specific sadness of finishing a great book", "The color of a memory fading away", "The heavy silence of unspoken apologies", "The rush of stepping into the unknown", "The bittersweet taste of outgrowing your hometown", "The anxiety of a blinking typing cursor", "The feeling of falling right before you fall asleep", "The desperate hope of a coin tossed in a fountain", "The warmth of a sudden, unexpected compliment", "The cold realization of an irreversible mistake"],
+            "Storytelling & Scenarios": ["a road trip with no destination", "winning the lottery but losing everything", "a detective solving their own murder", "a message from the future", "the last person on earth making a sandwich", "a robot trying to understand humor", "a ghost falling in love with a living person", "a time traveler trying to fix a mistake", "a dragon hoarding bitcoin", "a mermaid trapped in an aquarium", "a genie who misinterprets wishes literally", "A thief who accidentally steals a cursed artifact", "A chef cooking the last meal before the apocalypse", "A high school reunion where everyone is lying", "A radio host taking calls during a monster invasion", "An intern tasked with delivering coffee to supervillains", "A hitman who accidentally adopts a puppy", "Two snipers falling in love through their scopes", "A bank robber whose getaway car gets booted", "The last bard in a world that banned music"],
+            "Sci-Fi & Fantasy": ["a cyberpunk street samurai's lament", "a wizard's drinking song", "an AI dreaming of electric sheep", "a space pirate's shanty", "the last spell cast by a dying mage", "a robot uprising led by a toaster", "a city floating in the clouds", "telepathic communication gone wrong", "a warp drive malfunction", "harvesting stardust for fuel", "a potion seller's pitch", "the last dragon's flight", "An elf trying to cast magic in a modern city", "The first contact protocol failing spectacularly", "A tavern at the edge of the multiverse", "A time traveler trying to save a doomed timeline", "A mech pilot talking to their damaged machine", "A spellbook written in binary code", "A paladin suffering from a crisis of faith", "A goblin trying to become an investment banker", "A rogue AI running a galactic dating service", "The sorrow of an immortal finding a grey hair"],
+            "Travel & Adventure": ["hitchhiking across the galaxy", "getting lost in a foreign city", "sailing into the unknown", "climbing the highest mountain", "exploring a sunken city", "a caravan crossing the desert", "sleeping under the stars", "finding a secret beach", "riding a camel through the dunes", "a message in a bottle found on shore", "a map with no landmarks", "crossing a bridge made of light", "The feeling of an empty airport terminal at dawn", "A train ride through the snowy Alps", "Backpacking through a cursed forest", "A stowaway on a merchant vessel", "Discovering a civilization that lives inside a giant tree", "A road trip where the car breaks down every 100 miles", "Finding a hidden temple under a modern metropolis", "The thrill of stepping off the map"],
+            "Social Commentary & Political": ["a protest song against the machine", "the divide between rich and poor", "the cost of war", "environmental destruction", "the lies of politicians", "a revolution in the streets", "the struggle for freedom", "a satire on modern consumerism", "the loss of privacy", "fighting for equality", "the algorithmic bubble we live in", "a world without borders", "The corporatization of human emotions", "A lullaby for a dying planet", "The echo chamber of an internet feed", "A ballad for the gig economy workers", "The absurdity of selling water in plastic bottles", "A politician's promises turning to ash", "The militarization of space", "Algorithms deciding who gets healthcare", "The gentrification of the metaverse"],
+            "Humorous & Absurd": ["my toaster is plotting against me", "falling in love with a lamp", "the existential crisis of a npc", "a diss track against gravity", "a pigeon's plan for world domination", "an alien trying to order pizza", "a superhero with a useless power", "a zombie who is a vegan", "arguing with a gps", "trying to assemble ikea furniture", "a cat running for president", "a love song to a burrito", "An ode to the missing left sock", "My dog explaining why he barked at the mailman", "A diss track aimed at Monday mornings", "The epic saga of trying to cancel a gym membership", "A dramatic ballad about dropping your phone on your face in bed", "A vampire who is highly allergic to glitter", "An awkward conversation with a demon in the waiting room", "A song entirely made of corporate buzzwords", "The tragedy of a dropped ice cream cone", "An epic orchestral score for taking out the trash"],
+            "Viral & Internet Culture": ["getting lost in a wikipedia hole", "doomscrolling at 3am", "becoming a meme overnight", "an influencer's fake life", "internet drama exploding", "a glitchcore aesthetic", "the feeling of being 'chronically online'", "a viral dance challenge", "cancel culture fallout", "living for the likes", "the algorithm knows me better than i do", "a twitch stream gone wrong", "The melancholy of a discontinued MMO server", "Writing an apology notes app screenshot", "The haunting silence of a dead group chat", "Falling in love with an anonymous forum poster", "The anxiety of typing indicators disappearing", "A diss track generated by an AI bot", "The rapid rise and fall of a main character of the day", "Finding your own meme from 10 years ago", "The strange comfort of ASMR soap cutting videos"],
+            "Retro & Nostalgia": ["vhs tape tracking issues", "listening to a walkman on the bus", "a drive-in movie theater date", "pixel art landscapes", "an 80s arcade on a friday night", "driving a convertible in miami vice", "a 90s mall food court", "50s diner milkshake sharing", "70s disco fever", "blowing into a game cartridge", "dial-up internet sounds", "mixtapes and pencil rewinding", "The smell of a Blockbuster video rental store", "Burning a CD for your middle school crush", "The glow of a CRT television at midnight", "Saturday morning cartoons and sugary cereal", "The tragic death of a tamagotchi pet", "Skateboarding in the summer of 2004", "The sound of an ice cream truck in the distance", "Waiting for your favorite song to come on the radio", "The aesthetic of a vintage bowling alley carpet"],
+            "Specific Aesthetics": ["liminal spaces and empty hallways", "dreamcore surrealism", "cottagecore peacefulness", "dark academia library vibes", "weirdcore distortion", "vaporwave mallsoft", "goblincore forest floor", "cyberpunk neon rain", "steampunk gears and brass", "solarpunk utopian greenery", "kidcore bright colors", "clowncore chaos", "Y2K frutiger aero waiting room vibes", "Gothic cathedral stained glass reflections", "80s mall synthwave montage", "Spacecore retro-futurism", "Fairycore mushroom gathering", "Royalcore opulence and excess", "Glitchcore visual noise", "Ocean grunge coastal depression", "Space western frontier grit"],
+            "Philosophy & Existentialism": ["the meaning of life in a simulation", "staring into the void", "the concept of time dilation", "are we alone in the universe?", "the burden of consciousness", "finding purpose in chaos", "the absurdity of existence", "a debate between nihilism and hope", "the beauty of impermanence", "questioning reality", "the trolley problem set to music", "The terrifying freedom of having no destiny", "If a tree falls in a forest and no one is around to post it", "The illusion of a self in a world of mirrors", "Embracing the silence of a meaningless universe", "The stoic calm of accepting fate", "A hedonist realizing the party is over", "The search for truth in a post-truth society", "The realization that everyone is the main character in their own story"],
+            "Video Game Atmospheres": ["Exploring an ancient ruin", "Boss battle music", "A peaceful village theme", "Racing through a neon city", "Sneaking through an enemy base", "A sad cutscene piano melody", "Victory fanfare", "Game over screen darkness", "8-bit chiptune adventure", "Synthwave driving level", "Character creation screen chill vibes", "Loading screen ambient", "The peaceful safe room before the final boss", "Losing all your inventory in the lava", "The nostalgic hum of a PS2 starting up", "A sprawling open-world map waiting to be discovered", "The frantic energy of a 1v1 fighting game final round", "An underwater level with running-out-of-air anxiety", "The eerie calm of an abandoned hospital level", "A high-speed futuristic anti-gravity race", "The cozy feeling of managing a virtual farm", "A puzzle room that slowly drives the player insane"]
+        };
+
+        const artistStyleMap = {
+            "Sleep Token": "Progressive Metal / R&B / Djent / Pop Fusion",
+            "XG": "Galactic Pop / Hip-Hop",
+            "Tyla": "Amapiano / Pop",
+            "Chappell Roan": "Pop Rock / Theatrical / Indie Pop",
+            "Sabrina Carpenter": "Pop / Alt-Pop / Witty",
+            "Fred again..": "Ambient Techno / UK Garage",
+            "Tommy Richman": "Viral Funk / Lo-Fi R&B / Falsetto Pop",
+            "Hatsune Miku": "Vocaloid / J-Pop / Hyper-Tuned",
+            "K/DA": "K-Pop / Virtual Idol",
+            "CodeMiko": "Synth Pop / Twitch Streamer Aesthetic",
+            "Mave:": "K-Pop / Virtual / Trap",
+            "PLAVE": "K-Pop / Virtual / Boy Band",
+            "ISEGYE IDOL": "K-Pop / Virtual / Girl Group",
+            "The Algorithm": "Glitch-Soul / AI Pop / Metal",
+            "Studio Killers": "Electropop / Virtual",
+            "Polar": "Hyperpop / Virtual",
+            "Apoki": "K-Pop / Virtual / Rabbit",
+            "Playboi Carti": "Opium Rage / Deep Voice / Experimental",
+            "Yeat": "Opium Rage / Industrial / Trap",
+            "Ken Carson": "Opium Rage / Dark Trap Beats",
+            "Destroy Lonely": "Opium Rage / Minimalist / Hazy Trap",
+            "Sexyy Red": "Trap / Explicit / Viral",
+            "Central Cee": "UK Drill / Melodic Trap",
+            "Metro Boomin": "Trap / Dark / Atmospheric Production",
+            "Travis Scott": "Hip-Hop / Trap / Psychedelic",
+            "Don Toliver": "R&B / Trap / Psychedelic",
+            "Nicki Minaj": "Hip-Hop / Pop / Trap",
+            "Megan Thee Stallion": "Hip-Hop / Trap / Houston",
+            "Doja Cat": "Pop / Hip-Hop / R&B",
+            "MF DOOM": "Hip-Hop / Underground / Abstract",
+            "Mos Def": "Hip-Hop / Conscious",
+            "Aesop Rock": "Hip-Hop / Abstract / Lyrical",
+            "Skepta": "Grime / Hip-Hop",
+            "Dave": "Hip-Hop / UK / Lyrical",
+            "RAYE": "R&B / Jazz / Dance",
+            "Flo Milli": "Hip-Hop / Trap",
+            "Doechii": "Hip-Hop / Alternative",
+            "Phoebe Bridgers": "Indie Folk / Emo Folk",
+            "Boygenius": "Indie Rock / Folk",
+            "Paramore": "Pop Punk / Alt Rock / New Wave",
+            "Mitski": "Indie Rock / Art Pop",
+            "The 1975": "Pop Rock / Synth-Pop / 80s",
+            "Bad Omens": "Metalcore / Alt Metal / Pop",
+            "Spiritbox": "Metalcore / Progressive Metal",
+            "Fontaines D.C.": "Post-Punk / Indie Rock",
+            "Wet Leg": "Indie Rock / Post-Punk",
+            "IDLES": "Punk Rock / Post-Punk",
+            "Beach House": "Dream Pop / Indie Pop",
+            "Turnstile": "Hardcore Punk / Melodic Hardcore",
+            "Alvvays": "Indie Pop / Jangle Pop / Shoegaze",
+            "Glass Animals": "Indie Pop / Psychedelic Pop",
+            "Vampire Weekend": "Indie Rock / Baroque Pop / Afro-Pop",
+            "Hozier": "Indie Rock / Soul / Blues",
+            "Kordhell": "Phonk / Drift",
+            "DVRST": "Phonk / Chill",
+            "G3OX_EM": "Phonk / Aggressive",
+            "Overmono": "Electronic / UK Garage / Techno",
+            "Barry Can't Swim": "Electronic / House / Jazz",
+            "Bicep": "Electronic / Breakbeat / House",
+            "Lane 8": "Deep House / Progressive House",
+            "Marshmello": "EDM / Future Bass / Pop",
+            "Zedd": "EDM / Electro House / Pop",
+            "The Chainsmokers": "EDM / Pop / Future Bass",
+            "Arca": "Experimental / Electronic / Reggaeton",
+            "Dorian Electra": "Hyperpop / Experimental Pop",
+            "Sematary": "Haunted Mound / Horrorcore / Drill",
+            "Yung Lean": "Cloud Rap / Hip-Hop",
+            "Rick Astley": "Pop / Dance-Pop / Blue-Eyed Soul",
+            "Smash Mouth": "Alt Rock / Ska Punk / Pop Rock",
+            "Joji": "Alternative R&B / Lo-Fi / Trip-Hop / Melancholic",
+            "Benson Boone": "Pop / Rock / Ballad",
+            "Teddy Swims": "R&B / Soul / Country",
+            "Renee Rapp": "Pop / Musical Theatre",
+            "Hemlocke Springs": "Alt Pop / Synth-Pop / Lo-Fi",
+            "Ayra Starr": "Afrobeats / R&B / Pop",
+            "PinkPantheress": "Bedroom Pop / Drum and Bass / UK Garage",
+            "Riovaz": "Liquid DnB / House / Jersey Club / Pop",
+            "Remi Wolf": "Funk / Pop / Soul",
+            "Caroline Polachek": "Art Pop / Synth-Pop",
+            "G Jones": "Experimental Bass / IDM",
+            "Eprom": "Bass Music / Acid / Halftime",
+            "Knock2": "Bass House / Trap",
+            "ISOxo": "Trap / Bass Music",
+            "Kenny Mason": "Hip-Hop / Alternative Rock",
+            "Paris Texas": "Alternative Hip-Hop / Rock",
+            "Animals As Leaders": "Progressive Metal / Djent / Instrumental",
+            "Periphery": "Progressive Metal / Djent / Metalcore",
+            "Jane Remover": "Shoegaze / Glitch Pop / Emo",
+            "Underscores": "Hyperpop / Indie Pop / Electronic",
+            "Casiopea": "Jazz Fusion / Funk",
+            "T-Square": "Jazz Fusion / Pop",
+            "Masayoshi Takanaka": "City Pop / Jazz Fusion / Funk",
+            "Joe Hisaishi": "Cinematic / Classical / Minimalist",
+            "Ryuichi Sakamoto": "Electronic / Ambient / Classical",
+            "Knocked Loose": "Hardcore Punk / Metalcore",
+            "Polyphia": "Progressive Rock / Math Rock / Trap",
+            "The Glitch Mob": "Glitch Hop / Electronic",
+            "Master Boot Record": "Synthesized Metal / Chiptune / Progressive Metal",
+            "Lorn": "Electronic / Dark Ambient / Trip-Hop",
+            "Magic Sword": "Synthwave / Darksynth",
+            "Dan Terminus": "Darksynth / Cyberpunk",
+            "Gost": "Slasherwave / Darksynth",
+            "Access to Arasaka": "IDM / Glitch / Ambient",
+            "Machine Girl": "Digital Hardcore / Breakcore",
+            "Nanoray": "Speedcore / Breakcore",
+            "The Black Dahlia Murder": "Melodic Death Metal / Technical / Fast",
+            "Attila": "Metalcore / Deathcore / Rap Metal / Party Metal",
+            "Crown The Empire": "Metalcore / Post-Hardcore / Theatrical / Cinematic",
+            "Suicide Silence": "Deathcore / Nu-Metalcore / Heavy",
+            "Whitechapel": "Deathcore / Groove Metal",
+            "Parkway Drive": "Metalcore / Heavy Metal / Arena Metal",
+            "Architects": "Metalcore / Progressive Metal / Atmospheric",
+            "Behemoth": "Blackened Death Metal / Extreme Metal",
+            "Amon Amarth": "Melodic Death Metal / Viking Metal",
+            "Currents": "Metalcore / Progressive Metal / Melodic",
+            "Invent Animate": "Progressive Metalcore / Djent / Atmospheric",
+            "Silent Planet": "Metalcore / Conscious / Ambient",
+            "The Plot In You": "Metalcore / Alt Rock / Pop",
+            "Dayseeker": "Post-Hardcore / Synth-Pop / Emotional",
+            "Polaris": "Metalcore / Melodic Hardcore",
+            "Alpha Wolf": "Nu-Metalcore / Heavy / Aggressive",
+            "Erra": "Progressive Metalcore / Melodic / Technical",
+            "Northlane": "Industrial Metal / Progressive Metalcore",
+            "Thornhill": "Alternative Metal / Shoegaze / Progressive",
+            "The Japanese House": "Indie Pop / Dream Pop / Electropop",
+            "MUNA": "Indie Pop / Synth-Pop / Queer Pop",
+            "Faye Webster": "Indie Folk / Alt-Country / R&B",
+            "Soccer Mommy": "Indie Rock / Lo-Fi / Singer-Songwriter",
+            "Snail Mail": "Indie Rock / Lo-Fi",
+            "Big Thief": "Indie Folk / Folk Rock",
+            "Alex G": "Indie Rock / Lo-Fi / Experimental",
+            "Westside Gunn": "Hip-Hop / Boom Bap / Griselda",
+            "Conway the Machine": "Hip-Hop / Gangsta Rap / Gritty",
+            "Benny the Butcher": "Hip-Hop / Street Rap / Lyrical",
+            "Freddie Gibbs": "Hip-Hop / Gangsta Rap / Technical",
+            "Pusha T": "Hip-Hop / Coke Rap / Lyrical",
+            "Run The Jewels": "Hip-Hop / Hardcore / Experimental",
+            "RL Grime": "Trap / Bass Music / Future Bass",
+            "Baauer": "Trap / Bass Music / Electronic",
+            "Hudson Mohawke": "Wonky / Electronic / Trap",
+            "Rustie": "Aquacrunk / Future Bass / Glitch",
+            "Iglooghost": "Wonky / IDM / Hyperpop",
+            "Subtronics": "Dubstep / Riddim / Heavy Bass",
+            "Sullivan King": "Metalstep / Dubstep / Heavy Metal",
+            "Maude Latour": "Indie Pop / Alt Pop",
+            "Killer Mike": "Hip-Hop / Political / Hardcore",
+            "Kai Wachi": "Dubstep / Trap / Bass",
+            "Pinegrove": "Indie Rock / Alt-Country / Emo",
+            "The Beatles": "Classic Rock / Psychedelic / Pop",
+            "Queen": "Classic Rock / Operatic / Arena Rock",
+            "Michael Jackson": "Pop / Dance / R&B",
+            "Prince": "Funk / Rock / Pop",
+            "Metallica": "Thrash Metal / Heavy Metal",
+            "Iron Maiden": "Heavy Metal / NWOBHM",
+            "Slayer": "Thrash Metal / Speed Metal",
+            "Kendrick Lamar": "Hip-Hop / Jazz Rap / Conscious",
+            "Drake": "Hip-Hop / Pop Rap / R&B",
+            "Eminem": "Hip-Hop / Fast Flow / Lyrical",
+            "Taylor Swift": "Pop / Country / Indie Folk",
+            "Beyoncé": "R&B / Pop / Country",
+            "Radiohead": "Alt Rock / Experimental / Electronic",
+            "Nirvana": "Grunge / Alt Rock",
+            "Johnny Cash": "Country / Outlaw / Folk",
+            "Dolly Parton": "Country / Pop",
+            "Miles Davis": "Jazz / Fusion / Cool Jazz",
+            "John Coltrane": "Jazz / Bebop / Spiritual Jazz",
+            "Tool": "Progressive Metal / Alt Metal",
+            "System of a Down": "Alt Metal / Nu Metal",
+            "Rage Against the Machine": "Rap Metal / Funk Metal",
+            "Audioslave": "Hard Rock / Alt Rock",
+            "Soundgarden": "Grunge / Heavy Metal",
+            "Alice in Chains": "Grunge / Sludge Metal",
+            "Pearl Jam": "Grunge / Hard Rock",
+            "Stone Temple Pilots": "Grunge / Alt Rock",
+            "The Smashing Pumpkins": "Alt Rock / Shoegaze",
+            "Nine Inch Nails": "Industrial Rock / Electronic",
+            "Marilyn Manson": "Industrial Metal / Shock Rock",
+            "Rob Zombie": "Industrial Metal / Heavy Metal",
+            "Korn": "Nu Metal / Alt Metal",
+            "Limp Bizkit": "Nu Metal / Rap Rock",
+            "Slipknot": "Nu Metal / Heavy Metal",
+            "Disturbed": "Nu Metal / Hard Rock",
+            "Godsmack": "Hard Rock / Heavy Metal",
+            "Avenged Sevenfold": "Heavy Metal / Metalcore",
+            "Bullet for My Valentine": "Metalcore / Thrash Metal",
+            "Trivium": "Metalcore / Thrash Metal",
+            "Lamb of God": "Groove Metal / Thrash Metal",
+            "Mastodon": "Sludge Metal / Prog Metal",
+            "Gojira": "Technical Death Metal / Prog Metal",
+            "Opeth": "Progressive Death Metal / Prog Rock",
+            "Meshuggah": "Djent / Extreme Metal",
+            "Blink-182": "Pop Punk / Skate Punk",
+            "Green Day": "Punk Rock / Pop Punk",
+            "The Offspring": "Punk Rock / Skate Punk",
+            "Sum 41": "Pop Punk / Alt Metal",
+            "Good Charlotte": "Pop Punk / Alt Rock",
+            "Simple Plan": "Pop Punk / Emo",
+            "Sadder Days": "Darkwave / Spoken-Sung / Deep Bass / Haunting",
+            "EKKSTACY": "Post-Punk / Indie Pop / Synth-Pop / Emo",
+            "My Chemical Romance": "Emo / Alt Rock / Punk",
+            "Fall Out Boy": "Pop Punk / Emo / Pop Rock",
+            "Panic! At The Disco": "Pop Rock / Emo / Baroque Pop",
+            "Taking Back Sunday": "Emo / Post-Hardcore",
+            "The Used": "Post-Hardcore / Emo",
+            "Avril Lavigne": "Pop Punk / Alt Rock",
+            "All Time Low": "Pop Punk / Power Pop",
+            "Yellowcard": "Pop Punk / Alt Rock",
+            "Jimmy Eat World": "Emo / Alt Rock",
+            "The Chemical Brothers": "Big Beat / Electronica",
+            "The Prodigy": "Big Beat / Techno / Punk",
+            "Fatboy Slim": "Big Beat / House",
+            "Underworld": "Techno / Progressive House",
+            "Orbital": "Techno / Ambient",
+            "Kraftwerk": "Electronic / Synth-Pop",
+            "DJ Snake": "Trap / EDM / Pop",
+            "Major Lazer": "EDM / Dancehall / Moombahton",
+            "Diplo": "EDM / Trap / House",
+            "Kanii": "Jersey Club / R&B / Pop / Electronic",
+            "Nimstarr": "Hyperpop / DnB / Melodic Rap / Glitch",
+            "Akon": "R&B / Hip-Hop / Senegalese / Pop / Dancehall",
+            "Cuco": "Bedroom Pop / Chicano / Synth-Pop / Psychedelic",
+            "The Who": "Hard Rock / Power Pop",
+            "The Doors": "Psychedelic Rock / Blues Rock",
+            "Janis Joplin": "Blues Rock / Soul / Psychedelic",
+            "Cream": "Blues Rock / Psychedelic Rock",
+            "Creedence Clearwater Revival": "Swamp Rock / Roots Rock",
+            "The Eagles": "Rock / Country Rock / Soft Rock",
+            "Chicago": "Rock / Jazz Fusion / Soft Rock",
+            "Journey": "Rock / Arena Rock",
+            "Foreigner": "Rock / Arena Rock",
+            "Boston": "Rock / Arena Rock",
+            "Toto": "Rock / Pop / Jazz Fusion",
+            "Styx": "Rock / Prog Rock / Pop",
+            "REO Speedwagon": "Rock / Power Ballad",
+            "Heart": "Rock / Hard Rock / Folk",
+            "Pat Benatar": "Rock / Pop Rock",
+            "Joan Jett": "Rock / Punk / Hard Rock",
+            "The Strokes": "Indie Rock / Garage Rock Revival",
+            "The White Stripes": "Garage Rock / Blues Rock",
+            "Queens of the Stone Age": "Stoner Rock / Hard Rock",
+            "Foo Fighters": "Alt Rock / Hard Rock / Grunge",
+            "Red Hot Chili Peppers": "Funk Rock / Alt Rock",
+            "Incubus": "Alt Rock / Nu-Metal / Funk Metal",
+            "Linkin Park": "Nu Metal / Rap Rock / Alt Rock",
+            "Muse": "Alt Rock / Prog Rock / Space Rock",
+            "Coldplay": "Alt Rock / Pop Rock",
+            "Imagine Dragons": "Pop Rock / Electropop",
+            "Twenty One Pilots": "Alt Hip Hop / Electropop",
+            "The Killers": "Alt Rock / Indie Rock",
+            "Kings of Leon": "Southern Rock / Garage Rock",
+            "Florence + The Machine": "Indie Pop / Art Pop",
+            "Ariana Grande": "Pop / R&B",
+            "Billie Eilish": "Pop / Electropop / Dark Pop",
+            "Olivia Rodrigo": "Pop / Pop Punk",
+            "Dua Lipa": "Pop / Disco / Dance-Pop",
+            "Harry Styles": "Pop / Soft Rock",
+            "Lady Gaga": "Pop / Dance / Electronic",
+            "Bruno Mars": "Pop / Funk / R&B",
+            "Miley Cyrus": "Pop / Rock / Country",
+            "Katy Perry": "Pop / Dance-Pop",
+            "Rihanna": "Pop / R&B / Dancehall",
+            "Justin Bieber": "Pop / R&B",
+            "SZA": "R&B / Neo-Soul",
+            "Ed Sheeran": "Pop / Folk / Soft Rock",
+            "Adele": "Soul / Pop / R&B",
+            "Luke Combs": "Country",
+            "Blake Shelton": "Country",
+            "Keith Urban": "Country / Pop",
+            "Brad Paisley": "Country",
+            "Alan Jackson": "Country / Neotraditional",
+            "Brooks & Dunn": "Country",
+            "Hans Zimmer": "Cinematic / Orchestral / Epic",
+            "John Williams": "Cinematic / Classical / Orchestral",
+            "Ludovico Einaudi": "Contemporary Classical / Minimalist / Piano",
+            "Ennio Morricone": "Cinematic / Spaghetti Western / Classical",
+            "Howard Shore": "Cinematic / Fantasy / Orchestral",
+            "Ramin Djawadi": "Cinematic / Orchestral / Rock Hybrid",
+            "Max Richter": "Post-Minimalist / Contemporary Classical",
+            "Philip Glass": "Minimalist / Modern Classical",
+            "Steve Reich": "Minimalist / Avant-Garde",
+            "Johann Sebastian Bach": "Baroque / Classical",
+            "Ludwig van Beethoven": "Classical / Romantic",
+            "Wolfgang Amadeus Mozart": "Classical / Opera",
+            "Frederic Chopin": "Romantic / Piano / Classical",
+            "Claude Debussy": "Impressionist / Classical",
+            "Erik Satie": "Avant-Garde / Minimalist / Piano",
+            "Igor Stravinsky": "Modern Classical / Neoclassical",
+            "Pyotr Ilyich Tchaikovsky": "Romantic / Ballet / Classical",
+            "Gustav Mahler": "Late Romantic / Symphonic",
+            "Earth, Wind & Fire": "Funk / Soul / Disco",
+            "Chic": "Disco / Funk / R&B",
+            "Parliament-Funkadelic": "P-Funk / Psychedelic Funk",
+            "Kool & The Gang": "Funk / R&B / Disco",
+            "The Bee Gees": "Disco / Pop / Soft Rock",
+            "Donna Summer": "Disco / R&B / Pop",
+            "Diana Ross": "Soul / R&B / Disco",
+            "Sister Sledge": "Disco / R&B / Soul",
+            "Rick James": "Funk / Soul / Rock",
+            "George Clinton": "P-Funk / Funk Rock",
+            "Bootsy Collins": "Funk / Soul / R&B",
+            "Sly and the Family Stone": "Funk / Rock / Soul",
+            "The Commodores": "Funk / Soul / R&B",
+            "The Isley Brothers": "Funk / Soul / R&B",
+            "Tower of Power": "Funk / Soul / R&B",
+            "Vulfpeck": "Funk / Minimalist / R&B",
+            "Jamiroquai": "Acid Jazz / Funk / Disco",
+            "Bruno Mars (Silk Sonic)": "R&B / Soul / Funk",
+            "Anderson .Paak": "R&B / Hip-Hop / Soul / Funk",
+            "Count Basie": "Jazz / Swing / Big Band",
+            "Dave Brubeck": "Cool Jazz / West Coast Jazz",
+            "Chick Corea": "Jazz Fusion / Post-Bop",
+            "Thelonious Monk": "Bebop / Jazz",
+            "Charles Mingus": "Hard Bop / Post-Bop",
+            "Sarah Vaughan": "Jazz / Vocal Jazz",
+            "Howlin' Wolf": "Chicago Blues / Electric Blues",
+            "Robert Johnson": "Delta Blues / Country Blues",
+            "John Lee Hooker": "Electric Blues / Country Blues",
+            "Chet Baker": "Cool Jazz / West Coast Jazz / Vocal Jazz",
+            "Ella Fitzgerald": "Jazz / Vocal Jazz / Swing",
+            "B.B. King": "Electric Blues / Blues Rock",
+            "Muddy Waters": "Chicago Blues / Delta Blues",
+            "Louis Armstrong": "Jazz / Dixieland / Swing",
+            "Duke Ellington": "Jazz / Swing / Big Band",
+            "Björk": "Art Pop / Electronic / Avant-Garde",
+            "Sophie": "Hyperpop / Electronic / Avant-Pop",
+            "A.R. Rahman": "Bollywood / Cinematic / Classical Fusion",
+            "Arijit Singh": "Bollywood Pop / Romantic / Ballad",
+            "Shreya Ghoshal": "Bollywood / Indian Classical / Melodic",
+            "Nusrat Fateh Ali Khan": "Qawwali / Sufi / Traditional",
+            "Bad Bunny": "Reggaeton / Latin Trap / Urbano",
+            "Rosalía": "New Flamenco / Latin Pop / Experimental",
+            "Vicente Fernández": "Ranchera / Mariachi / Regional Mexican",
+            "Luis Miguel": "Latin Pop / Bolero / Mariachi",
+            "Celia Cruz": "Salsa / Guaracha / Tropical",
+            "Omer Adam": "Mizrahi / Israeli Pop / Mediterranean",
+            "Noa Kirel": "Israeli Pop / Dance-Pop",
+            "Eyal Golan": "Mizrahi / Pop",
+            "Ofra Haza": "Israeli / Traditional / Yemenite Jewish",
+            "Amr Diab": "Arabic Pop / Mediterranean",
+            "Fairuz": "Arabic / Classical / Lebanese",
+            "Fela Kuti": "Afrobeat / Jazz / Funk",
+            "Burna Boy": "Afrobeats / Dancehall / Reggae",
+            "Burial": "Dubstep / UK Garage / Electronic",
+            "Death Grips": "Experimental Hip-Hop / Industrial",
+            "Frank Ocean": "Alternative R&B / Neo-Soul",
+            "The Weeknd": "Alternative R&B / Pop",
+            "Rex Orange County": "Bedroom Pop / Indie Pop",
+            "FKA twigs": "Alternative R&B / Avant-Pop / Electronic",
+            "Charli XCX": "Hyperpop / Dance-Pop",
+            "Ghost": "Progressive Metal / Doom Metal",
+            "CHON": "Jazz Fusion / Math Rock",
+            "Snarky Puppy": "Funk / Jazz Fusion",
+            "Kamasi Washington": "Jazz / Neo-Soul / Funk",
+            "Aespa": "K-Pop / R&B / Y2K",
+            "LE SSERAFIM": "K-Pop / Dance-Pop / Reggaeton",
+            "Stray Kids": "K-Pop / EDM / Hip-Hop",
+            "Porter Robinson": "Synth-Pop / Indie Electronic",
+            "Tchami": "Future House / Electronic",
+            "Rezz": "Future House / Midtempo Bass",
+            "Illenium": "Midtempo Bass / Electronic",
+            "LSDREAM": "Midtempo Bass / Dubstep",
+            "SleepNet": "Midtempo Bass / Experimental",
+            "Black Tiger Sex Machine": "Dubstep / Heavy Metal",
+            "Apocalyptica": "Progressive Death Metal / Symphonic",
+            "In Flames": "Symphonic Metal / Melodic Death",
+            "Nightwish": "Symphonic Metal / Cello Metal",
+            "Lorna Shore": "Deathcore / Symphonic",
+            "Slaughter To Prevail": "Deathcore / Nu-Metal",
+            "Make Them Suffer": "Metalcore / Deathcore",
+            "Denzel Curry": "Hip-Hop / Hardcore Rap",
+            "JID": "Hip-Hop / Technical Rap",
+            "Earthgang": "Hip-Hop / Southern Rap",
+            "Isaiah Rashad": "Hip-Hop / Fast Flow / Storytelling",
+            "JPEGMAFIA": "Experimental Hip-Hop / Glitch",
+            "Ethel Cain": "Southern Gothic / Ambient Pop / Slowcore",
+            "Noah Kahan": "Folk Pop / Stomp and Holler",
+            "Tyler Childers": "Neo-Traditional Country / Bluegrass",
+            "Jason Isbell": "Americana / Alt-Country / Singer-Songwriter",
+            "Zach Bryan": "Red Dirt Country / Raw Acoustic",
+            "Loathe": "Metalcore / Shoegaze / Deftones-core",
+            "Mac Miller": "Hip-Hop / Jazz Rap / Melancholy",
+            "J. Cole": "Hip-Hop / Conscious Rap",
+            "Bleachers": "Indie Pop / Heartland Rock / 80s Revival",
+            "The National": "Indie Rock / Sadcore / Baritone",
+            "Fiona Apple": "Art Pop / Jazz / Singer-Songwriter",
+            "Sufjan Stevens": "Indie Folk / Orchestral Pop",
+            "Elliott Smith": "Indie Folk / Lo-Fi / Melancholic",
+            "Bon Iver": "Indie Folk / Folktronica / Ethereal"
+        };
+
+        // --- State Management ---
+        let currentSong = null;
+        let songHistory = JSON.parse(localStorage.getItem('catsSongHistory')) || [];
+        const API_KEY_STORAGE = 'catsSunoApiKey';
+
+        // --- DOM Elements ---
+        const els = {
+            createTabBtn: document.getElementById('create-tab-btn'),
+            historyTabBtn: document.getElementById('history-tab-btn'),
+            createTabContent: document.getElementById('create-tab-content'),
+            historyTabContent: document.getElementById('history-tab-content'),
+            songForm: document.getElementById('song-form'),
+            generateBtn: document.getElementById('generate-btn'),
+            loader: document.getElementById('loader'),
+            results: document.getElementById('results-container'),
+            errorMsg: document.getElementById('error-message'),
+            lyricsArea: document.getElementById('generated-lyrics'),
+            title: document.getElementById('song-title'),
+            prompt: document.getElementById('suno-prompt'),
+            artistSearch: document.getElementById('artist-search'),
+            styleSearch: document.getElementById('style-search'),
+            historyList: document.getElementById('history-list'),
+            rhymeModal: document.getElementById('rhyme-modal'),
+            refineModal: document.getElementById('refine-modal'),
+            blendModal: document.getElementById('blend-modal'),
+            themeCategorySelect: document.getElementById('theme-category'),
+            apiKeyInput: document.getElementById('api-key-input'),
+            saveKeyBtn: document.getElementById('save-key-btn')
+        };
+
+        // --- Helper Functions ---
+        const showToast = (msg) => {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-msg').textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        };
+
+        const copyToClipboard = (text) => {
+            // Highly compatible iframe-safe copy mechanism
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.position = 'fixed';
+            ta.style.left = '-9999px';
+            document.body.appendChild(ta);
+            ta.focus();
+            ta.select();
+            try {
+                const successful = document.execCommand('copy');
+                if(successful) showToast('Copied to clipboard!');
+                else showToast('Failed to copy. Try selecting manually.');
+            } catch (err) {
+                showToast('Copy not supported by your browser.');
+            }
+            document.body.removeChild(ta);
+        };
+
+        // --- Tab Switching ---
+        const switchTab = (tab) => {
+            if (tab === 'create') {
+                els.createTabContent.classList.remove('hidden');
+                els.historyTabContent.classList.add('hidden');
+                els.createTabBtn.classList.add('active');
+                els.historyTabBtn.classList.remove('active');
+            } else {
+                els.createTabContent.classList.add('hidden');
+                els.historyTabContent.classList.remove('hidden');
+                els.createTabBtn.classList.remove('active');
+                els.historyTabBtn.classList.add('active');
+                renderHistory();
+            }
+        };
+
+        els.createTabBtn.addEventListener('click', () => switchTab('create'));
+        els.historyTabBtn.addEventListener('click', () => switchTab('history'));
+
+        // --- API Key Logic ---
+        const savedKey = localStorage.getItem(API_KEY_STORAGE);
+        if (savedKey) els.apiKeyInput.value = savedKey;
+
+        els.saveKeyBtn.addEventListener('click', () => {
+            const key = els.apiKeyInput.value.trim();
+            if (key) {
+                localStorage.setItem(API_KEY_STORAGE, key);
+                showToast('API Key saved securely to your browser!');
+            } else {
+                localStorage.removeItem(API_KEY_STORAGE);
+                showToast('API Key removed from browser.');
+            }
+        });
+
+        // --- History System ---
+        const saveToHistory = (songData) => {
+            songHistory.unshift({
+                ...songData,
+                id: Date.now(),
+                timestamp: new Date().toLocaleString()
+            });
+            if (songHistory.length > 50) songHistory.pop(); // Keep last 50
+            localStorage.setItem('catsSongHistory', JSON.stringify(songHistory));
+        };
+
+        const deleteHistoryItem = (id) => {
+            songHistory = songHistory.filter(item => item.id !== id);
+            localStorage.setItem('catsSongHistory', JSON.stringify(songHistory));
+            renderHistory();
+        };
+
+        const loadHistoryItem = (id) => {
+            const song = songHistory.find(item => item.id === id);
+            if (song) {
+                currentSong = song;
+                els.title.textContent = song.title;
+                els.prompt.textContent = song.sunoPrompt;
+                els.lyricsArea.value = song.lyrics;
+                
+                // Load DNA if exists
+                if(song.dna) {
+                    document.getElementById('dna-bpm').textContent = song.dna.bpm || '--';
+                    document.getElementById('dna-key').textContent = song.dna.key || '--';
+                    document.getElementById('dna-mood').textContent = song.dna.mood || '--';
+                    document.getElementById('dna-instruments').textContent = song.dna.instruments || '--';
+                }
+
+                els.results.classList.remove('hidden');
+                switchTab('create');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        };
+
+        const renderHistory = () => {
+            els.historyList.innerHTML = '';
+            if (songHistory.length === 0) {
+                els.historyList.innerHTML = `
+                    <div class="text-center text-slate-500 py-10">
+                        <i class="fas fa-music text-4xl mb-3 opacity-30"></i>
+                        <p>No songs saved yet.</p>
+                    </div>`;
+                return;
+            }
+
+            songHistory.forEach(song => {
+                const el = document.createElement('div');
+                el.className = 'history-item p-4 rounded-lg flex justify-between items-center';
+                el.innerHTML = `
+                    <div class="overflow-hidden mr-4">
+                        <h3 class="font-bold text-white truncate">${song.title}</h3>
+                        <p class="text-xs text-slate-400 truncate">${song.style} • ${song.timestamp}</p>
+                    </div>
+                    <div class="flex gap-2 shrink-0">
+                        <button onclick="window.loadSong(${song.id})" class="text-sky-400 hover:text-sky-300 p-2"><i class="fas fa-upload"></i> Load</button>
+                        <button onclick="window.deleteSong(${song.id})" class="text-red-400 hover:text-red-300 p-2"><i class="fas fa-trash"></i></button>
+                    </div>
+                `;
+                els.historyList.appendChild(el);
+            });
+        };
+
+        // Expose to window for inline onclicks
+        window.loadSong = loadHistoryItem;
+        window.deleteSong = deleteHistoryItem;
+        document.getElementById('clear-history-btn').addEventListener('click', () => {
+            if(confirm('Clear all history?')) {
+                songHistory = [];
+                localStorage.removeItem('catsSongHistory');
+                renderHistory();
+            }
+        });
+
+        // --- Core Generator Logic ---
+        els.songForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = {
+                artist: els.artistSearch.value || 'Generic',
+                style: els.styleSearch.value || 'Pop',
+                theme: document.getElementById('song-theme').value,
+                structure: document.getElementById('song-structure').value,
+                model: document.getElementById('suno-model').value,
+                language: document.getElementById('song-language').value,
+                useDescriptors: document.getElementById('add-descriptors-toggle').checked,
+                usePreChorus: document.getElementById('pre-chorus-toggle').checked,
+                isInstrumental: document.getElementById('instrumental-toggle').checked
+            };
+
+            els.generateBtn.disabled = true;
+            document.getElementById('btn-text').textContent = 'Dreaming...';
+            els.loader.classList.remove('hidden');
+            els.errorMsg.classList.add('hidden');
+            els.results.classList.add('hidden');
+
+            try {
+                // System Instruction defines the AI's role
+                const systemInstruction = `You are a visionary hit-making songwriter and a Suno v5.5 prompt engineer. You write structured, catchy SONGS, not narrative stories or poetry. Focus on rhythm, repeating choruses, and strict structural formatting. Return valid JSON matching the schema exactly.`;
+                
+                // User Prompt defines what we specifically want
+                const userPrompt = `Create a song with these specs:
+- Artist Vibe: ${formData.artist}
+- Genre/Style: ${formData.style}
+- Topic: ${formData.theme}
+- Structure: ${formData.structure}
+- Language: ${formData.language}
+
+${formData.isInstrumental ? 
+    "IMPORTANT: This is an INSTRUMENTAL track. Do NOT write lyrics. Provide a detailed structure map with Suno v5.5 [Meta Tags] describing the instrumentation, dynamic shifts, and energy flow. At the very top, include new v5.5 production tags like [production: heavy bass, wide stereo], [dynamics: crescendo, building], or [instrumentation: synths, drum machine]." : 
+    "Write full, creative lyrics optimized for Suno v5.5. CRITICALLY: Write an ACTUAL SONG, not a narrative story. Emphasize tight song structures, repeating hooks, strong rhythm, and consistent meter. DO NOT write dense, wordy paragraphs. Use deeply specific human details, but keep it strictly formatted as a lyric sheet.\n\nFORMATTING & CODE RULES:\n1. Use square brackets [] for all structural sections (e.g., [Verse 1], [Chorus], [Drop]).\n2. Use curly braces {} for all inline vocal directions or emotional delivery (e.g., {whisper}, {voice breaks}, {shouts}).\n3. Treat the spacing and syntax as strictly as code: perfection in layout is required.\n\nAT THE VERY TOP of the lyrics output, you MUST include advanced vocal, production, and musical metadata tags in brackets. Adapt these formats to the vibe, but USE these categories at the absolute top:\n\n[voice: spoken-sung, deep baritone, intimate, breathy]\n[production: close-mic, no reverb, dry vocals, analog warmth]\n[range: C2-C4]\n[technique: vocal fry, rough edges, emotional break]\n[melody: syncopated, conversational, descending]\n[exclude: polished singing, generic pop melodies, high pitch, perfect pitch]\n\nCRITICAL SUNO V5.5 SPACING RULES:\n1. Group the top metadata tags together with NO blank lines between them.\n2. Leave exactly ONE blank line between the top metadata block and the first lyric section.\n3. Leave exactly ONE blank line between song sections (e.g., between [Verse 1] and [Chorus]).\n4. Do NOT leave blank lines between the lines of lyrics inside a section. " + (formData.useDescriptors ? "Include inline {Performance Descriptors} inside curly braces before lines." : "") + (formData.usePreChorus ? " Include a [Pre-Chorus] section." : "")}
+
+Output Requirements:
+- "title": Creative, non-cliché Song Title.
+- "sunoPrompt": A highly descriptive and evocative string of comma-separated musical style tags optimized for Suno AI. Do NOT just list basic genres. Include specific vocal textures, atmospheric keywords, core instruments, tempo, and emotional vibe (e.g. 'Darkwave, haunting baritone, pulsing analog bass, ethereal synths, slow driving tempo, melancholic, heavy reverb, cinematic'). Maximize descriptive richness to create a unique soundscape. DO NOT use the artist name here.
+- "lyrics": The full lyrics or structure content (starting with the bracketed metadata tags at the very top).
+- "dna": An object with "bpm" (e.g. "120"), "key" (e.g. "C Minor"), "mood" (e.g. "Melancholic, Driving"), and "instruments" (e.g. "Synth, Bass, Drums").`;
+
+                // Enforced Schema (Removed inline descriptions to prevent 400 Bad Request schema errors)
+                const responseSchema = {
+                    type: "OBJECT",
+                    properties: {
+                        title: { type: "STRING" },
+                        sunoPrompt: { type: "STRING" },
+                        lyrics: { type: "STRING" },
+                        dna: {
+                            type: "OBJECT",
+                            properties: {
+                                bpm: { type: "STRING" },
+                                key: { type: "STRING" },
+                                mood: { type: "STRING" },
+                                instruments: { type: "STRING" }
+                            }
+                        }
+                    },
+                    required: ["title", "sunoPrompt", "lyrics", "dna"]
+                };
+
+                const data = await fetchWithRetry(getApiUrl(), {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{ role: "user", parts: [{ text: userPrompt }] }],
+                        systemInstruction: { parts: [{ text: systemInstruction }] },
+                        generationConfig: { 
+                            responseMimeType: "application/json",
+                            responseSchema: responseSchema
+                        }
+                    })
+                });
+
+                // Safety and payload checks
+                if (data.promptFeedback?.blockReason) {
+                    throw new Error(`Prompt blocked by safety filters: ${data.promptFeedback.blockReason}`);
+                }
+                const candidate = data.candidates?.[0];
+                if (!candidate) throw new Error("No candidates returned from AI.");
+                if (candidate.finishReason && candidate.finishReason !== 'STOP') {
+                    throw new Error(`Generation stopped early (${candidate.finishReason})`);
+                }
+
+                let resultText = candidate.content?.parts?.[0]?.text;
+                if (!resultText) throw new Error("API returned empty text.");
+                
+                // Strip markdown formatting if present
+                resultText = resultText.replace(/^```json\s*/i, '').replace(/\s*```$/i, '').trim();
+                const result = JSON.parse(resultText);
+
+                // Update UI
+                els.title.textContent = result.title;
+                els.lyricsArea.value = result.lyrics;
+                
+                // Update DNA Panel & Enhance Prompt
+                let enhancedPrompt = result.sunoPrompt;
+
+                if(result.dna) {
+                    document.getElementById('dna-bpm').textContent = result.dna.bpm || '--';
+                    document.getElementById('dna-key').textContent = result.dna.key || '--';
+                    document.getElementById('dna-mood').textContent = result.dna.mood || '--';
+                    document.getElementById('dna-instruments').textContent = result.dna.instruments || '--';
+                    
+                    // Add DNA elements to the style prompt string
+                    const dnaTags = [];
+                    if(result.dna.bpm && result.dna.bpm !== '--') dnaTags.push(result.dna.bpm + " BPM");
+                    if(result.dna.key && result.dna.key !== '--') dnaTags.push(result.dna.key);
+                    if(result.dna.mood && result.dna.mood !== '--') dnaTags.push(result.dna.mood);
+                    if(result.dna.instruments && result.dna.instruments !== '--') dnaTags.push(result.dna.instruments);
+                    
+                    if(dnaTags.length > 0) {
+                        enhancedPrompt += ", " + dnaTags.join(", ");
+                    }
+                }
+                
+                els.prompt.textContent = enhancedPrompt;
+
+                currentSong = {
+                    ...result,
+                    sunoPrompt: enhancedPrompt, // Store the enhanced version
+                    artist: formData.artist,
+                    style: formData.style
+                };
+                
+                // Save & Show
+                saveToHistory(currentSong);
+                
+                els.results.classList.remove('hidden');
+                els.results.scrollIntoView({ behavior: 'smooth' });
+
+            } catch (err) {
+                console.error(err);
+                els.errorMsg.textContent = `Generation failed: ${err.message}`;
+                els.errorMsg.classList.remove('hidden');
+            } finally {
+                els.generateBtn.disabled = false;
+                document.getElementById('btn-text').textContent = 'Generate Song';
+                els.loader.classList.add('hidden');
+            }
+        });
+
+        // --- Tool Logic: Rhymes ---
+        document.getElementById('find-rhyme-btn').addEventListener('click', async () => {
+            const selection = els.lyricsArea.value.substring(els.lyricsArea.selectionStart, els.lyricsArea.selectionEnd).trim();
+            if (!selection) return showToast('Please highlight a word first!');
+            
+            // Open Modal
+            els.rhymeModal.classList.remove('hidden');
+            document.getElementById('rhyme-target-word').textContent = selection;
+            const resultsContainer = document.getElementById('rhyme-results');
+            resultsContainer.innerHTML = '';
+            document.getElementById('rhyme-loader').classList.remove('hidden');
+
+            try {
+                const prompt = `List 10 creative rhymes for the word "${selection}". Focus on rhymes suitable for a ${els.styleSearch.value || 'Pop'} song.`;
+                const schema = {
+                    type: "ARRAY",
+                    items: { type: "STRING" }
+                };
+
+                const data = await fetchWithRetry(getApiUrl(), {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: prompt }] }],
+                        generationConfig: { 
+                            responseMimeType: "application/json",
+                            responseSchema: schema
+                        }
+                    })
+                });
+                
+                if (data.promptFeedback?.blockReason) throw new Error(`Safety block: ${data.promptFeedback.blockReason}`);
+                const candidate = data.candidates?.[0];
+                if (!candidate) throw new Error("No results returned.");
+
+                let rhymesText = candidate.content?.parts?.[0]?.text;
+                if (!rhymesText) throw new Error("Invalid API Response");
+
+                rhymesText = rhymesText.replace(/^```json\s*/i, '').replace(/\s*```$/i, '').trim();
+                const rhymes = JSON.parse(rhymesText);
+                
+                document.getElementById('rhyme-loader').classList.add('hidden');
+                
+                rhymes.forEach(word => {
+                    const btn = document.createElement('button');
+                    btn.className = 'bg-slate-800 hover:bg-sky-600 text-slate-200 text-sm py-2 px-3 rounded transition-colors text-left';
+                    btn.textContent = word;
+                    btn.onclick = () => {
+                        window.insertTextAtCursor(word);
+                        els.rhymeModal.classList.add('hidden');
+                    };
+                    resultsContainer.appendChild(btn);
+                });
+
+            } catch (e) {
+                console.error(e);
+                document.getElementById('rhyme-loader').classList.add('hidden');
+                resultsContainer.innerHTML = `<p class="text-red-400 col-span-2 text-center text-xs">Error: ${e.message}</p>`;
+            }
+        });
+
+        // --- Tool Logic: Refine ---
+        document.getElementById('refine-lyrics-btn').addEventListener('click', () => {
+             els.refineModal.classList.remove('hidden');
+        });
+
+        document.getElementById('do-refine-btn').addEventListener('click', async () => {
+            const instructions = document.getElementById('refine-instructions').value;
+            if(!instructions) return showToast("Enter instructions first!");
+            
+            const btn = document.getElementById('do-refine-btn');
+            const loader = document.getElementById('refine-loader');
+            btn.disabled = true;
+            loader.classList.remove('hidden');
+            
+            try {
+                const currentLyrics = els.lyricsArea.value;
+                const prompt = `Rewrite the following lyrics based on this instruction: "${instructions}". Keep the same general structure unless asked to change. Return ONLY the new lyrics text.\n\nCurrent Lyrics:\n${currentLyrics}`;
+                
+                const data = await fetchWithRetry(getApiUrl(), {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: prompt }] }]
+                    })
+                });
+
+                if (data.promptFeedback?.blockReason) throw new Error(`Safety block: ${data.promptFeedback.blockReason}`);
+                const candidate = data.candidates?.[0];
+                if (!candidate) throw new Error("No results returned.");
+
+                const newLyrics = candidate.content?.parts?.[0]?.text;
+                if (!newLyrics) throw new Error("Invalid API Response");
+                
+                els.lyricsArea.value = newLyrics.trim();
+                els.refineModal.classList.add('hidden');
+                showToast("Lyrics refined!");
+                
+            } catch(e) {
+                console.error(e);
+                showToast(`Refinement failed: ${e.message}`);
+            } finally {
+                btn.disabled = false;
+                loader.classList.add('hidden');
+            }
+        });
+
+        // --- Tool Logic: Formatter ---
+        document.getElementById('beautify-btn').addEventListener('click', () => {
+            let text = els.lyricsArea.value;
+            // Standardize newlines
+            text = text.replace(/\r\n/g, '\n');
+            // Remove excessive newlines (max 2 consecutive)
+            text = text.replace(/\n{3,}/g, '\n\n');
+            
+            // Ensure double space before section tags, but single space before meta tags
+            text = text.replace(/\n+\[(Verse|Chorus|Bridge|Outro|Pre-|Hook|Spoken|Instrumental|Guitar|Drop|Beat|Break)/gi, '\n\n[$1');
+            
+            els.lyricsArea.value = text.trim();
+            showToast('Lyrics formatted!');
+        });
+
+        // --- Tool Logic: Export ---
+        const downloadFile = (filename, content) => {
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        };
+
+        document.getElementById('download-btn').addEventListener('click', () => {
+            const title = els.title.textContent || 'song';
+            const content = `TITLE: ${title}
+STYLE: ${els.prompt.textContent}
+BPM: ${document.getElementById('dna-bpm').textContent} | KEY: ${document.getElementById('dna-key').textContent}
+
+${els.lyricsArea.value}
+
+Generated by Cats Suno Song Writer 5.5`;
+            downloadFile(`${title.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.txt`, content);
+        });
+
+        document.getElementById('download-json-btn').addEventListener('click', () => {
+            if (!currentSong) return showToast("No song data to save.");
+            downloadFile(`${currentSong.title.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.json`, JSON.stringify(currentSong, null, 2));
+        });
+
+        // --- Shared Modal Closers ---
+        document.querySelectorAll('.close-modal-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                els.blendModal.classList.add('hidden');
+                els.rhymeModal.classList.add('hidden');
+                els.refineModal.classList.add('hidden');
+            });
+        });
+
+        // --- Editor Utils ---
+        window.insertTag = (tag) => {
+            window.insertTextAtCursor(tag, true);
+        };
+
+        window.insertTextAtCursor = (text, addNewlines = false) => {
+            const start = els.lyricsArea.selectionStart;
+            const end = els.lyricsArea.selectionEnd;
+            const original = els.lyricsArea.value;
+            const prefix = (addNewlines && start > 0 && original[start-1] !== '\n') ? '\n\n' : '';
+            const suffix = addNewlines ? '\n' : '';
+            
+            els.lyricsArea.value = original.substring(0, start) + prefix + text + suffix + original.substring(end);
+            els.lyricsArea.focus();
+            els.lyricsArea.selectionStart = els.lyricsArea.selectionEnd = start + prefix.length + text.length + suffix.length;
+            updateSyllables();
+        };
+
+        const updateSyllables = () => {
+            const text = els.lyricsArea.value;
+            const cursorPos = els.lyricsArea.selectionStart;
+            const lines = text.substr(0, cursorPos).split("\n");
+            const currentLine = lines[lines.length - 1];
+            
+            if (!currentLine || !currentLine.trim()) {
+                document.getElementById('syllable-display').textContent = "Line Syllables: 0";
+                return;
+            }
+            
+            // Simple syllable estimation
+            const words = currentLine.trim().split(/\s+/);
+            let count = 0;
+            words.forEach(word => {
+                word = word.toLowerCase().replace(/[^a-z]/g, '');
+                if(word.length <= 3) { count += 1; return; }
+                word = word.replace(/(?:[^laeiouy]es|ed|[^laeiouy]e)$/, '');
+                word = word.replace(/^y/, '');
+                const matches = word.match(/[aeiouy]{1,2}/g);
+                count += matches ? matches.length : 1;
+            });
+            document.getElementById('syllable-display').textContent = `Line Syllables: ~${count}`;
+        };
+        
+        els.lyricsArea.addEventListener('keyup', updateSyllables);
+        els.lyricsArea.addEventListener('click', updateSyllables);
+
+        // --- Copy Buttons ---
+        document.getElementById('copy-title-btn').onclick = () => copyToClipboard(els.title.textContent);
+        document.getElementById('copy-prompt-btn').onclick = () => copyToClipboard(els.prompt.textContent);
+        document.getElementById('copy-lyrics-btn').onclick = () => copyToClipboard(els.lyricsArea.value);
+
+        // --- Randomizers & Dropdowns ---
+        
+        // Helper: Detect style from artist name
+        const detectStyle = (artistName) => {
+            if (!artistName) return;
+            // Try exact match
+            let styleKey = Object.keys(artistStyleMap).find(key => key.toLowerCase() === artistName.toLowerCase());
+            // Try partial match
+            if (!styleKey) {
+                styleKey = Object.keys(artistStyleMap).find(key => artistName.toLowerCase().includes(key.toLowerCase()));
+            }
+
+            if (styleKey) {
+                const suggestedStyle = artistStyleMap[styleKey];
+                const targetStyleInput = document.getElementById('style-search');
+                if (targetStyleInput) {
+                    targetStyleInput.value = suggestedStyle;
+                    showToast(`Style set to ${suggestedStyle}`);
+                }
+            }
+        };
+
+        const setupDropdown = (inputId, listId, resultsId) => {
+            const input = document.getElementById(inputId);
+            const select = document.getElementById(listId);
+            const results = document.getElementById(resultsId);
+
+            // Add Blur listener for auto-detection when user types manually
+            if (inputId === 'artist-search') {
+                input.addEventListener('blur', () => {
+                    // Small timeout to allow click events on dropdown to fire first
+                    setTimeout(() => {
+                        detectStyle(input.value);
+                    }, 200);
+                });
+            }
+
+            const showResults = (filter = "") => {
+                results.innerHTML = '';
+                const term = filter.toLowerCase();
+                let hasResult = false;
+
+                Array.from(select.children).forEach(group => {
+                    const matches = Array.from(group.children).filter(opt => opt.value.toLowerCase().includes(term));
+                    if (matches.length > 0) {
+                        hasResult = true;
+                        const label = document.createElement('div');
+                        label.className = "px-3 py-1 text-xs font-bold text-slate-500 bg-slate-800 uppercase";
+                        label.textContent = group.label;
+                        results.appendChild(label);
+                        matches.forEach(opt => {
+                            const div = document.createElement('div');
+                            div.className = "px-3 py-2 text-sm text-slate-200 hover:bg-sky-900/50 cursor-pointer";
+                            div.textContent = opt.value;
+                            div.onclick = () => {
+                                input.value = opt.value;
+                                results.classList.add('hidden');
+                                
+                                // Auto-Style Logic on Click
+                                if (inputId === 'artist-search') {
+                                    detectStyle(opt.value);
+                                }
+                            };
+                            results.appendChild(div);
+                        });
+                    }
+                });
+                results.classList.toggle('hidden', !hasResult);
+            };
+
+            input.addEventListener('focus', () => showResults(input.value));
+            input.addEventListener('input', () => showResults(input.value));
+            document.addEventListener('click', (e) => {
+                if(!input.contains(e.target) && !results.contains(e.target)) results.classList.add('hidden');
+            });
+        };
+
+        setupDropdown('artist-search', 'artist-select', 'artist-results');
+        setupDropdown('style-search', 'style-select', 'style-results');
+
+        const getRandomOption = (selectId) => {
+            const select = document.getElementById(selectId);
+            const options = Array.from(select.querySelectorAll('option'));
+            return options[Math.floor(Math.random() * options.length)].value;
+        };
+
+        document.getElementById('random-artist-btn').onclick = () => {
+            const artist = getRandomOption('artist-select');
+            document.getElementById('artist-search').value = artist;
+            detectStyle(artist);
+        };
+        document.getElementById('random-style-btn').onclick = () => document.getElementById('style-search').value = getRandomOption('style-select');
+        
+        // RESTORED: Context-Aware Theme Randomizer
+        document.getElementById('random-theme-btn').onclick = () => {
+             const selectedCategory = els.themeCategorySelect.value;
+             const themeList = themes[selectedCategory] || themes["All"];
+             const randomIndex = Math.floor(Math.random() * themeList.length);
+             document.getElementById('song-theme').value = themeList[randomIndex];
+        };
+
+        // NEW: "Surprise Me" Button
+        document.getElementById('surprise-me-btn').onclick = () => {
+            // Random Artist
+            const artist = getRandomOption('artist-select');
+            document.getElementById('artist-search').value = artist;
+            detectStyle(artist);
+            
+            // Random Theme
+            const themeList = themes["All"];
+            document.getElementById('song-theme').value = themeList[Math.floor(Math.random() * themeList.length)];
+            
+            // Random Structure
+            const structures = ['Short', 'Standard', 'Long'];
+            document.getElementById('song-structure').value = structures[Math.floor(Math.random() * structures.length)];
+            
+            showToast("Surprise! Settings randomized.");
+        };
+
+        // --- Blend Modal Logic (Fixed) ---
+        let blendTarget = null;
+        const openBlend = (targetId) => {
+            blendTarget = document.getElementById(targetId);
+            els.blendModal.classList.remove('hidden');
+        };
+        
+        document.getElementById('blend-artist-btn').onclick = () => openBlend('artist-search');
+        document.getElementById('blend-style-btn').onclick = () => openBlend('style-search');
+        
+        document.getElementById('blend-random-fill-btn').onclick = () => {
+            const pool = blendTarget.id === 'artist-search' ? 'artist-select' : 'style-select';
+            document.getElementById('blend-input-1').value = getRandomOption(pool);
+            document.getElementById('blend-input-2').value = getRandomOption(pool);
+        };
+        
+        document.getElementById('blend-confirm-btn').onclick = () => {
+            // Fixed the mapping logic to correctly fetch all input fields and filter blanks
+            const inputs = [1, 2, 3, 4]
+                .map(i => document.getElementById(`blend-input-${i}`).value.trim())
+                .filter(v => v !== "");
+            
+            if(inputs.length > 0) {
+                blendTarget.value = inputs.join(" + ");
+                els.blendModal.classList.add('hidden');
+                // Clear inputs
+                [1,2,3,4].forEach(i => document.getElementById(`blend-input-${i}`).value = '');
+            } else {
+                showToast("Enter at least one item!");
+            }
+        };
+
+    </script>
+</body>
+</html>
